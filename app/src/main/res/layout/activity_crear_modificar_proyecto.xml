@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProyectActivity" >
+
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/negro"
+        android:padding="10dp"
+        android:text="Nuevo proyecto"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/blanco"
+        android:textSize="25sp" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_crear_proyecto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewHeader" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp" >
+
+            <EditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/handrwritteedittext"
+                android:ems="10"
+                android:hint="Nombre"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/butonFechaInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/handrwritteedittext"
+                android:ems="10"
+                android:gravity="left"
+                android:hint="Fecha de Inicio (DD/MM/AAAA)"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/editTextDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/handrwritteedittext"
+                android:gravity="top|left"
+                android:hint="Descripción"
+                android:inputType="textMultiLine"
+                android:minLines="5"
+                android:padding="10dp" >
+
+                <requestFocus />
+            </EditText>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <fragment
+        android:id="@+id/fragmentNotificationProyecto"
+        android:name="com.troncodroide.pesoppo.fragments.MultiNotificationsFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/notifications_fragment_layout" />
+
+    <Button
+        android:id="@+id/button_crear_modificar_proyecto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/azul"
+        android:gravity="center"
+        android:text="Crear"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/blanco"
+        android:textSize="25sp" />
+
+</RelativeLayout>

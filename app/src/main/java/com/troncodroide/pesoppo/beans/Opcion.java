@@ -1,6 +1,12 @@
 package com.troncodroide.pesoppo.beans;
 
 public class Opcion {
+    public final static String OPTION_STATUS = "EstatusOption";
+    public final static String OPTION_PROJECTS = "ProjectsOption";
+    public final static String OPTION_ACTIVITIES = "Activities Option";
+    public final static String OPTION_KEYS = "KeysOption";
+    public final static String OPTION_INTERRUPTIONS = "InterruptionOption";
+    public final static String OPTION_CONFIGURATION = "ConfiguractionOption";
 	private String tittle;
 	private String id;
 

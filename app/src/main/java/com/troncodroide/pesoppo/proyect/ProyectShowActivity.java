@@ -1,9 +1,11 @@
-package com.troncodroide.pesoppo;
+package com.troncodroide.pesoppo.proyect;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.troncodroide.pesoppo.R;
 
 
 public class ProyectShowActivity extends ActionBarActivity {

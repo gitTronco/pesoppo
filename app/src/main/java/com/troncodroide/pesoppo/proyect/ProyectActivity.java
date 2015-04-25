@@ -1,5 +1,6 @@
-package com.troncodroide.pesoppo;
+package com.troncodroide.pesoppo.proyect;
 
+import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.database.controllers.ProyectosController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;

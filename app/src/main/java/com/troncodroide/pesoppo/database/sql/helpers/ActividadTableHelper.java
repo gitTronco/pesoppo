@@ -39,7 +39,11 @@ public class ActividadTableHelper {
 	public static String getSelectAllString() {
 			String sql = "SELECT * FROM " + tabla + ";";
 		return sql;
-	}	
+	}
+    public static String getSelectAllByProject(long idProject) {
+			String sql = "SELECT * FROM " + tabla + " WHERE "+ ActividadTableHelper.idProyecto + " = " +idProject ;
+		return sql;
+	}
 	
 	public static String getSelectById(long id) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
@@ -128,8 +132,4 @@ public class ActividadTableHelper {
 		return cv;
 	}
 
-	
-	
-	
-	
 }

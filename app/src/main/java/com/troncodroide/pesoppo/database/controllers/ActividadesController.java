@@ -81,9 +81,16 @@ public class ActividadesController {
 
 	public List<Actividad> getActividades() {
 		Cursor c = manager.select(ActividadTableHelper.getSelectAllString());
-		List<Actividad> proyectos = ActividadTableHelper.getListFromCursor(c);
+		List<Actividad> actividads = ActividadTableHelper.getListFromCursor(c);
 		c.close();
 		manager.close();
-		return proyectos;
+		return actividads;
 	}
+    public List<Actividad> getActividades(long idProyecto) {
+        Cursor c = manager.select(ActividadTableHelper.getSelectAllByProject(idProyecto));
+        List<Actividad> actividads = ActividadTableHelper.getListFromCursor(c);
+        c.close();
+        manager.close();
+        return actividads;
+    }
 }

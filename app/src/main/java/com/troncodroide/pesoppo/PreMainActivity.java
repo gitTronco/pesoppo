@@ -43,10 +43,10 @@ public class PreMainActivity extends ActionBarActivity{
 				R.anim.fadein);
 		Animation anim4 = AnimationUtils.loadAnimation(getApplicationContext(),
 				R.anim.fadein);
-		anim1.setStartOffset(1000);
-		anim2.setStartOffset(2000);
-		anim3.setStartOffset(3000);
-		anim4.setStartOffset(4000);
+		anim1.setStartOffset(500);
+		anim2.setStartOffset(1000);
+		anim3.setStartOffset(1500);
+		anim4.setStartOffset(2000);
 
 		t1.startAnimation(anim1);
 		t2.startAnimation(anim2);

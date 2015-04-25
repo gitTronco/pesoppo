@@ -5,27 +5,36 @@
     android:background="#EEEEEE"
     tools:context=".PreMainActivity" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
+    <ListView
+        android:id="@+id/listViewProyectos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:gravity="center"
         android:orientation="vertical" >
-
-        <ListView
-            android:id="@+id/listViewProyectos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbarAlwaysDrawVerticalTrack="true" >
-
         </ListView>
 
-    </LinearLayout>
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="com.troncodroide.pesoppo.customviews.AwesomeButton"
+        android:id="@+id/add_new_project"
+        android:layout_alignParentBottom="true"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/azul"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="@null"
+        android:text="@string/fa_plus_circle"/>
+
 
 </RelativeLayout>

@@ -3,16 +3,11 @@ package com.troncodroide.pesoppo.fragments;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.troncodroide.pesoppo.ProyectActivity;
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Opcion;
-import com.troncodroide.pesoppo.beans.Proyecto;
-import com.troncodroide.pesoppo.database.controllers.ProyectosController;
-import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,16 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DrawerLeftFragment extends Fragment {
 
@@ -46,6 +37,7 @@ public class DrawerLeftFragment extends Fragment {
 	private TextView tittle;
 	private Button bottonButton;
 	private String tittleString = "Proyectos";
+
 	private ArrayAdapter<Opcion> adapter;
 
 	private OnClickListener listener;

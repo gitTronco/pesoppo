@@ -23,7 +23,7 @@
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_crear_proyecto"
+        android:layout_above="@+id/button_crear_modificar_proyecto"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textViewHeader" >

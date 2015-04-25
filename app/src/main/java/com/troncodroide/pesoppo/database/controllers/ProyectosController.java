@@ -73,9 +73,14 @@ public class ProyectosController {
 			throws SqlExceptions.UniqueKeyException {
 		Cursor c = manager.select(ProyectoTableHelper.getSelectByName(name));
 		c.moveToFirst();
-		Proyecto p = ProyectoTableHelper.getFromCursor(c); 
-		c.close();
-		manager.close();
+
+        Proyecto p = ProyectoTableHelper.getFromCursor(c);
+        c.close();
+
+        ActividadesController ac = new ActividadesController(manager);
+        p.setActividades(ac.getActividades());
+
+        manager.close();
 		return p;
 	}
 
@@ -83,6 +88,8 @@ public class ProyectosController {
 		Cursor c = manager.select(ProyectoTableHelper.getSelectAllString());
 		List<Proyecto> proyectos = ProyectoTableHelper.getListFromCursor(c);
 		c.close();
+
+
 		manager.close();
 		return proyectos;
 	}

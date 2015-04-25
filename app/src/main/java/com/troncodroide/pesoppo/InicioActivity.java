@@ -1,118 +1,138 @@
 package com.troncodroide.pesoppo;
 
-import com.troncodroide.pesoppo.beans.Opcion;
-import com.troncodroide.pesoppo.fragments.DrawerLeftFragment;
-import com.troncodroide.pesoppo.fragments.InicioActividadesFragment;
-import com.troncodroide.pesoppo.fragments.ProyectosFragment;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
+import android.support.v4.widget.DrawerLayout;
+import android.view.animation.TranslateAnimation;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-public class InicioActivity extends ActionBarActivity implements DrawerLeftFragment.EventListener{
-    DrawerLeftFragment drawerFragment;
-    InicioActividadesFragment inicioFragment;
-    ProyectosFragment proyectosFragment;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle mDrawerToggle;
+import com.troncodroide.pesoppo.R;
+import com.troncodroide.pesoppo.beans.Opcion;
+import com.troncodroide.pesoppo.proyect.ProyectosFragment;
 
-    int paginacion = 0;
-    private final int PAGINA_INICIO = 0;
-    private final int PAGINA_ACTIVIDADES = 1;
-    private final int PAGINA_PROYECTOS = 2;
-    private final int PAGINA_INTERRUPCIONES = 3;
-    private final int PAGINA_CLAVES = 4;
+public class InicioActivity extends ActionBarActivity
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    /**
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    /**
+     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
+     */
+    private CharSequence mTitle;
+    private float lastTranslate;
+    private View parent_container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.ic_launcher,
-                R.string.app_name,
-                R.string.title_activity_proyect) {
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mTitle = getTitle();
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        drawerLayout.setDrawerListener(mDrawerToggle);
-        drawerFragment = new DrawerLeftFragment();
-        inicioFragment = new InicioActividadesFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, inicioFragment, inicioFragment.name).
-                replace(R.id.left_drawer, drawerFragment, drawerFragment.name).commit();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //http://developer.android.com/training/implementing-navigation/nav-drawer.html
+        parent_container = findViewById(R.id.container);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onNavigationDrawerItemSelected(Opcion position) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        switch (position.getId()) {
+            case Opcion.OPTION_ACTIVITIES: {
+                break;
+            }
+            case Opcion.OPTION_CONFIGURATION: {
+                break;
+            }
+            case Opcion.OPTION_INTERRUPTIONS: {
+                break;
+            }
+            case Opcion.OPTION_KEYS: {
+                break;
+            }
+            case Opcion.OPTION_PROJECTS: {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, ProyectosFragment.newInstance())
+                        .commit();
+                break;
+            }
+            case Opcion.OPTION_STATUS: {
+                break;
+            }
+        }
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(mTitle);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.proyect, menu);
-        return false;
+        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+            // Only show items in the action bar relevant to this screen
+            // if the drawer is not showing. Otherwise, let the drawer
+            // decide what to show in the action bar.
+            //getMenuInflater().inflate(R.menu.main2, menu);
+            restoreActionBar();
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (drawerLayout.isDrawerOpen(Gravity.LEFT)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                }else {
-                    super.onBackPressed();
-                }
-                break;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onOptionClicked(Opcion op) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (op.getId().contentEquals(DrawerLeftFragment.OPTION_ACTIVITIES)){
-
-        }else if (op.getId().contentEquals(DrawerLeftFragment.OPTION_INTERRUPTIONS)){
-
-        }else if (op.getId().contentEquals(DrawerLeftFragment.OPTION_KEYS)){
-
-        }else if (op.getId().contentEquals(DrawerLeftFragment.OPTION_PROJECTS)){
-            proyectosFragment = (proyectosFragment==null)?new ProyectosFragment():proyectosFragment;
-            ft.replace(R.id.content_frame, proyectosFragment, proyectosFragment.name);
-        }else if (op.getId().contentEquals(DrawerLeftFragment.OPTION_STATUS)){
-
+    public void onNavigationDrawerSlide(View drawerView, float slideOffset) {
+        float moveFactor = (drawerView.getWidth() * slideOffset);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            parent_container.setTranslationX(moveFactor);
+        } else {
+            TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
+            anim.setDuration(0);
+            anim.setFillAfter(true);
+            parent_container.startAnimation(anim);
+            lastTranslate = moveFactor;
         }
-        ft.commit();
-        drawerLayout.closeDrawer(Gravity.LEFT);
-
     }
+
 }

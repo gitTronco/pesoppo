@@ -1,17 +1,11 @@
 package com.troncodroide.pesoppo.fragments;
 
-import java.util.List;
-
-import com.troncodroide.pesoppo.ProyectActivity;
+import com.troncodroide.pesoppo.proyect.ProyectActivity;
 import com.troncodroide.pesoppo.R;
-import com.troncodroide.pesoppo.beans.Proyecto;
-import com.troncodroide.pesoppo.database.controllers.ProyectosController;
-import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

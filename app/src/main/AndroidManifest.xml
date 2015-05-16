@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".proyect.ProyectActivity"
+            android:name=".project.ProjectActivity"
             android:label="@string/title_activity_proyect" >
         </activity>
         <activity
@@ -37,7 +37,7 @@
             android:label="@string/title_activity_proyect" >
         </activity>
         <activity
-            android:name=".proyect.ProyectShowActivity"
+            android:name=".project.ProjectShowActivity"
             android:label="@string/title_activity_proyect_show" >
         </activity>
     </application>

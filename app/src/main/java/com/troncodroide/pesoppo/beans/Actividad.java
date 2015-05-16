@@ -1,10 +1,11 @@
 package com.troncodroide.pesoppo.beans;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import com.troncodroide.pesoppo.util.CalendarUtil;
 
-public class Actividad {
+public class Actividad implements Serializable{
 	/*
 	 * id
 	 * proyecto
@@ -115,6 +116,6 @@ public class Actividad {
 	
 	@Override
 	public String toString() {
-		return "ActividadObservable: "+this.id+" - "+this.getNombre();
+		return nombre;
 	}
 }

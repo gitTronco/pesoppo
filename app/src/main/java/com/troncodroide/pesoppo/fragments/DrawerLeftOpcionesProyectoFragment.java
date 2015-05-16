@@ -1,6 +1,6 @@
 package com.troncodroide.pesoppo.fragments;
 
-import com.troncodroide.pesoppo.proyect.ProyectActivity;
+import com.troncodroide.pesoppo.project.ProjectActivity;
 import com.troncodroide.pesoppo.R;
 
 import android.content.Intent;
@@ -108,7 +108,7 @@ public class DrawerLeftOpcionesProyectoFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					startActivityForResult(new Intent(getActivity(),
-							ProyectActivity.class), 1024);
+							ProjectActivity.class), 1024);
 				}
 			};
 			bottonButton.setOnClickListener(listener);

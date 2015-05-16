@@ -17,7 +17,7 @@ import com.troncodroide.pesoppo.database.sql.helpers.ProyectoTableHelper;
 
 public class SqlLiteManager extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "PesoppoDB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static SQLiteDatabase db = null;
     private final String TAG = SqlLiteManager.class.getSimpleName();
 

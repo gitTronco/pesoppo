@@ -1,27 +1,18 @@
 package com.troncodroide.pesoppo;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.view.animation.TranslateAnimation;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Opcion;
-import com.troncodroide.pesoppo.proyect.ProyectosFragment;
+import com.troncodroide.pesoppo.project.ProjectsFragment;
 
 public class InicioActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -75,7 +66,7 @@ public class InicioActivity extends ActionBarActivity
             }
             case Opcion.OPTION_PROJECTS: {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, ProyectosFragment.newInstance())
+                        .replace(R.id.container, ProjectsFragment.newInstance())
                         .commit();
                 break;
             }

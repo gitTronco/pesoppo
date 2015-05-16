@@ -1,4 +1,4 @@
-package com.troncodroide.pesoppo.proyect;
+package com.troncodroide.pesoppo.project;
 
 
 import android.animation.LayoutTransition;
@@ -27,14 +27,14 @@ import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import java.io.Serializable;
 import java.util.List;
 
-public class ProyectosFragment extends Fragment {
+public class ProjectsFragment extends Fragment {
 	public static final String name ="Proyectos";
 	DataHolder dataHolder;
 	ViewHolder viewHolder;
 
     public static Fragment newInstance() {
 
-        return new ProyectosFragment();
+        return new ProjectsFragment();
     }
 
     private static class DataHolder implements Serializable{
@@ -88,17 +88,19 @@ public class ProyectosFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Proyecto p = (Proyecto)adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(getActivity(),ProjectShowActivity.class);
+                intent.putExtra(Proyecto.class.getName(),p);
+                startActivity(intent);
             }
         });
 
         viewHolder.addProyect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),ProyectActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(),ProjectActivity.class);
+                startActivityForResult(intent, 232);
             }
         });
-
 
 		return view;
 	}
@@ -168,6 +170,19 @@ public class ProyectosFragment extends Fragment {
             });
 
             return convertView;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 232){
+            if (resultCode == ProjectActivity.RESULT_PROJECT_OK){
+                ProyectosController controller = new ProyectosController(new SqlLiteManager(getActivity()));
+                dataHolder.proyectos = controller.getProyectos();
+                viewHolder.listview.setAdapter(new ProjectsAdapter(getActivity(), dataHolder.proyectos));
+            }
+
         }
     }
 }

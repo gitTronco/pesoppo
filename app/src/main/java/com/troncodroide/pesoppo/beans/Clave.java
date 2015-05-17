@@ -28,7 +28,6 @@ public class Clave {
 
 	@Override
 	public String toString() {
-
-		return Clave.class.getSimpleName() + ":" + id + "@" + nombre;
+		return nombre;
 	}
 }

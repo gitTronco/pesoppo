@@ -33,7 +33,7 @@ public class ClaveTableHelper {
 	
 	public static String getSelectByName(String name) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
-				+ ClaveTableHelper.nombre + " = " + name;
+				+ ClaveTableHelper.nombre + " = '" + name+"'";
 		return sql;
 	}
 
@@ -82,8 +82,4 @@ public class ClaveTableHelper {
 		return cv;
 	}
 
-	
-	
-	
-	
 }

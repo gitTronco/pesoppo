@@ -34,7 +34,8 @@
         </activity>
         <activity
             android:name=".InicioActivity"
-            android:label="@string/title_activity_proyect" >
+            android:label="@string/title_activity_proyect"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity
             android:name=".project.ProjectShowActivity"

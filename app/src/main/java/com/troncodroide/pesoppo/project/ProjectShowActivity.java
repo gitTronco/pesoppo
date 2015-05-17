@@ -85,7 +85,7 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
         vh.actividades = (ListView) findViewById(R.id.actividades_proyecto_listview);
         vh.add = (Button) findViewById(R.id.add_new_activity);
 
-        vh.actividades.setAdapter(new ArrayAdapter<Actividad>(this, android.R.layout.simple_list_item_1, dh.actividades));
+        vh.actividades.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dh.actividades));
         vh.add.setTag(new Actividad());
         vh.add.setOnClickListener(this);
 

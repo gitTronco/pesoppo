@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.troncodroide.pesoppo.R;
-import com.troncodroide.pesoppo.activities.ActivitiesFragment;
+import com.troncodroide.pesoppo.activities.ActivityFragment;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
@@ -20,8 +20,7 @@ import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import java.io.Serializable;
 import java.util.List;
 
-
-public class ProjectShowActivity extends ActionBarActivity implements View.OnClickListener, ActivitiesFragment.OnFragmentInteractionListener {
+public class ProjectShowActivity extends ActionBarActivity implements View.OnClickListener, ActivityFragment.OnFragmentInteractionListener {
     DataHolder dh;
     ViewHolder vh;
 
@@ -29,7 +28,7 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_activity: {
-                ActivitiesFragment.newInstance((Actividad)view.getTag()).show(getSupportFragmentManager(),ActivitiesFragment.class.getSimpleName());
+                ActivityFragment.newInstance((Actividad) view.getTag()).show(getSupportFragmentManager(),ActivityFragment.class.getSimpleName());
             }
         }
     }
@@ -51,7 +50,6 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
         dh.actividades = controller.getActividades();
     }
 
-
     private class ViewHolder {
         ListView actividades;
         Button add;
@@ -72,7 +70,6 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proyect_show);
-
         if (savedInstanceState == null) {
             dh = new DataHolder();
             dh.proyecto = (Proyecto) getIntent().getSerializableExtra(Proyecto.class.getName());
@@ -91,7 +88,6 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(dh.proyecto.getNombre());
-
 
     }
 

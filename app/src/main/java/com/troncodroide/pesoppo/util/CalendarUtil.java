@@ -44,4 +44,6 @@ public class CalendarUtil {
 		Log.i("Calendar:",year+"-"+month+"-"+day+ " "+((hour<10)?"0"+hour:hour)+":"+min+":"+sec);
 		return year+"-"+month+"-"+day+ " "+((hour<10)?"0"+hour:hour)+":"+min+":"+sec;	
 	}
+
+
 }

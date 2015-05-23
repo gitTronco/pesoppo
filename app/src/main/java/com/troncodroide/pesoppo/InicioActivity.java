@@ -1,10 +1,12 @@
 package com.troncodroide.pesoppo;
 
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.animation.TranslateAnimation;
 
 import com.troncodroide.pesoppo.beans.Opcion;
+import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 
 public class InicioActivity extends ActionBarActivity
@@ -44,16 +47,15 @@ public class InicioActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout),toolbar);
+                (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
-        parent_container = findViewById(R.id.container);
+        parent_container = findViewById(R.id.wrappercontainer);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(Opcion position) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         switch (position.getId()) {
             case Opcion.OPTION_ACTIVITIES: {
                 break;
@@ -65,9 +67,14 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_KEYS: {
+                mTitle = "Tags";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, KeisFragment.newInstance())
+                        .commit();
                 break;
             }
             case Opcion.OPTION_PROJECTS: {
+                mTitle = "Proyecto";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, ProjectsFragment.newInstance())
                         .commit();
@@ -85,7 +92,6 @@ public class InicioActivity extends ActionBarActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -106,8 +112,6 @@ public class InicioActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -129,4 +133,22 @@ public class InicioActivity extends ActionBarActivity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!getSupportFragmentManager().popBackStackImmediate()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Salir");
+            builder.setMessage("¿Desea salir?");
+            builder.setNegativeButton("No",null);
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.create().show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

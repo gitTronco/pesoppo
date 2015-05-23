@@ -10,6 +10,7 @@ import com.troncodroide.pesoppo.exceptions.SqlExceptions.UniqueKeyException;
 import com.troncodroide.pesoppo.fragments.DatePickerFragment;
 import com.troncodroide.pesoppo.fragments.NotificationsFragment;
 import com.troncodroide.pesoppo.fragments.MultiNotificationsFragment.Message;
+import com.troncodroide.pesoppo.util.ValidateUtil;
 
 import android.os.Bundle;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -52,7 +53,7 @@ public class ProjectActivity extends FragmentActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
                 String dateText = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                if (validateDate(dateText)) {
+                if (ValidateUtil.validateDate(dateText)) {
                     datePikerButton.setText(dateText);
                     proyecto.setFechaInicio(dateText);
                 } else {
@@ -223,31 +224,15 @@ public class ProjectActivity extends FragmentActivity {
         sendBroadcast(myFilteredResponse);
     }
 
-    private boolean validateText(String text) {
-        if (text.trim().length() == 0) {
-            return false;
-        } else
-            return true;
 
-    }
 
-    private boolean validateDate(String date) {
-        String dateRegexp = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
-        if (validateText(date)) {
-            return date.trim().matches(dateRegexp);
-        } else {
-            return false;
-        }
-    }
 
     private boolean validateInputs() {
         String nombre = nombreEdit.getText().toString();
         String descripcion = descripcionEdit.getText().toString();
-        ;
         String date = datePikerButton.getText().toString();
-        ;
-        if (validateText(nombre) && validateText(descripcion)
-                && validateDate(date)) {
+        if (ValidateUtil.validateText(nombre) && ValidateUtil.validateText(descripcion)
+                && ValidateUtil.validateDate(date)) {
             return true;
         }
         return false;

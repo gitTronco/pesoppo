@@ -1,6 +1,8 @@
 package com.troncodroide.pesoppo.beans;
 
-public class Clave {
+import java.io.Serializable;
+
+public class Clave implements Serializable{
 	/*
 	 * id nombre
 	 */

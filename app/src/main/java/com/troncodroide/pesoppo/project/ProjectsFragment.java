@@ -1,6 +1,5 @@
 package com.troncodroide.pesoppo.project;
 
-
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +28,15 @@ import java.util.List;
 
 public class ProjectsFragment extends Fragment {
 	public static final String name ="Proyectos";
-	DataHolder dataHolder;
+    private static ProjectsFragment mFragment;
+    DataHolder dataHolder;
 	ViewHolder viewHolder;
 
-    public static Fragment newInstance() {
-
-        return new ProjectsFragment();
+    public static ProjectsFragment newInstance() {
+        if (mFragment==null){
+            mFragment = new ProjectsFragment();
+        }
+        return mFragment;
     }
 
     private static class DataHolder implements Serializable{

@@ -169,6 +169,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         String dateText = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                        vh.fecha.setText(dateText);
                         if (ValidateUtil.validateDate(dateText)) {
                             vh.fecha.setText(dateText);
                             dh.actividad.setFechaInicio(dateText);
@@ -177,7 +178,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                             vh.fecha.setError("Seleccione una fecha válida");
                         }
                     }
-                });
+                }).show(getChildFragmentManager(),DatePickerFragment.class.getSimpleName());
             }
         });
 

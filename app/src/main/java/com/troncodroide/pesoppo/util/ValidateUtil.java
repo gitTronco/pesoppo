@@ -15,6 +15,6 @@ public class ValidateUtil {
     }
 
     public static boolean validateText(String text) {
-        return (text.trim().length() == 0);
+        return (text.trim().length() > 0);
     }
 }

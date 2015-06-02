@@ -34,7 +34,7 @@ public class InterrupcionTableHelper {
 	
 	public static String getSelectById(long id) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
-				+ InterrupcionTableHelper.id + " = " + id;
+				+ InterrupcionTableHelper.id + " = '" + id+"'";
 		return sql;
 	}
 

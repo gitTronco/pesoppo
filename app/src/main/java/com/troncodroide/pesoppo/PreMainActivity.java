@@ -1,6 +1,11 @@
 package com.troncodroide.pesoppo;
 
+import com.google.gson.Gson;
+import com.troncodroide.pesoppo.beans.Actividad;
+import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.configuracion.Configuracion;
+import com.troncodroide.pesoppo.database.controllers.ActividadesController;
+import com.troncodroide.pesoppo.database.controllers.ProyectosController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
 import android.os.Bundle;
@@ -19,94 +24,134 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-public class PreMainActivity extends ActionBarActivity{
+import java.util.ArrayList;
+import java.util.List;
 
-	TextView t1;
-	TextView t2;
-	TextView t3;
-	TextView t4;
-	int i = 0;
+public class PreMainActivity<T> extends ActionBarActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_pre_main);
-		t1 = (TextView) findViewById(R.id.TextView03);
-		t2 = (TextView) findViewById(R.id.TextView02);
-		t3 = (TextView) findViewById(R.id.TextView01);
-		t4 = (TextView) findViewById(R.id.textViewNotificarionsFragment);
-		Animation anim1 = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.fadein);
-		Animation anim2 = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.fadein);
-		Animation anim3 = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.fadein);
-		Animation anim4 = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.fadein);
-		anim1.setStartOffset(500);
-		anim2.setStartOffset(1000);
-		anim3.setStartOffset(1500);
-		anim4.setStartOffset(2000);
+    TextView t1;
+    TextView t2;
+    TextView t3;
+    TextView t4;
 
-		t1.startAnimation(anim1);
-		t2.startAnimation(anim2);
-		t3.startAnimation(anim3);
-		t4.startAnimation(anim4);
-		Configuracion.setContext(getApplicationContext());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pre_main);
+        t1 = (TextView) findViewById(R.id.TextView03);
+        t2 = (TextView) findViewById(R.id.TextView02);
+        t3 = (TextView) findViewById(R.id.TextView01);
+        t4 = (TextView) findViewById(R.id.textViewNotificarionsFragment);
+        Animation anim1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fadein);
+        Animation anim2 = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fadein);
+        Animation anim3 = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fadein);
+        Animation anim4 = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fadein);
+        anim1.setStartOffset(500);
+        anim2.setStartOffset(1000);
+        anim3.setStartOffset(1500);
+        anim4.setStartOffset(2000);
 
-		anim4.setAnimationListener(new Animation.AnimationListener() {
+        t1.startAnimation(anim1);
+        t2.startAnimation(anim2);
+        t3.startAnimation(anim3);
+        //t4.startAnimation(anim4);
+        Configuracion.setContext(getApplicationContext());
 
-			@Override
-			public void onAnimationStart(Animation animation) {
+        anim4.setAnimationListener(new Animation.AnimationListener() {
 
-			}
+            @Override
+            public void onAnimationStart(Animation animation) {
 
-			@Override
-			public void onAnimationRepeat(Animation animation) {
+            }
 
-			}
+            @Override
+            public void onAnimationRepeat(Animation animation) {
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				startActivity(new Intent(PreMainActivity.this,
-						InicioActivity.class));
-				PreMainActivity.this.finish();
-			}
-		});
+            }
 
-	}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                startActivity(new Intent(PreMainActivity.this, InicioActivity.class));
+                PreMainActivity.this.finish();
+            }
+        });
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.pre_main, menu);
-		return true;
-	}
+        SqlLiteManager manager = new SqlLiteManager(this);
+        ActividadesController aController = new ActividadesController(manager);
+        ProyectosController pController = new ProyectosController(manager);
+        Log.i("GetActivities", toString(aController.getActividades()));
+        Log.i("GetProjectos", toString(pController.getProyectos()));
+        Actividad a = new Actividad();
+        a.setNombre("Leer");
+        a.setDescripcion("Lecturas para la presnetación del proyecto de tfg");
+        a.setIdClave(1);
+        a.setFechaInicio("22/04/2015");
+        a.setIdProyecto(1);
+        a.setTerminado(false);
+        a.setTiempoDedicacion("1h");
+        a.setTiempoEstimado("1h");
+        a.setUnidades(3);
+        Log.i("Activity", new Gson().toJson(a));
+        try {
+            aController.addActividad(a);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        Log.i("GetActivities", toString(aController.getActividades()));
+        Log.i("GetProject1", new Gson().toJson(pController.getProyecto(1)));
+        Log.i("GetProject2", new Gson().toJson(pController.getProyecto(2)));
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		//sendPendingNotification();
-		return super.onOptionsItemSelected(item);
-	}
+    }
 
-	private void sendPendingNotification() {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				PreMainActivity.this)
-				.setSmallIcon(android.R.drawable.stat_sys_warning)
-				.setLargeIcon(
-						(((BitmapDrawable) getResources().getDrawable(
-								R.drawable.ic_launcher)).getBitmap()))
-				.setContentTitle("Mensaje de Alerta")
-				.setContentText("Ejemplo de notificaci0n.").setContentInfo("4")
-				.setTicker("Alerta!");
-		Intent notIntent = new Intent(PreMainActivity.this,
-				PreMainActivity.class);
-		PendingIntent contIntent = PendingIntent.getActivity(
-				PreMainActivity.this, 0, notIntent, 0);
-		mBuilder.setContentIntent(contIntent);
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(1, mBuilder.build());
+    private String toString(List array) {
+        String tString = "[";
+        if (array != null)
+            for (Object obj : array) {
+                if (tString.trim().length() > 1) {
+                    tString += ",";
+                }
+                tString += new Gson().toJson(obj);
+            }
+        tString += "]";
 
-	}
+        return tString;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.pre_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //sendPendingNotification();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void sendPendingNotification() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                PreMainActivity.this)
+                .setSmallIcon(android.R.drawable.stat_sys_warning)
+                .setLargeIcon(
+                        (((BitmapDrawable) getResources().getDrawable(
+                                R.drawable.ic_launcher)).getBitmap()))
+                .setContentTitle("Mensaje de Alerta")
+                .setContentText("Ejemplo de notificaci0n.").setContentInfo("4")
+                .setTicker("Alerta!");
+        Intent notIntent = new Intent(PreMainActivity.this,
+                PreMainActivity.class);
+        PendingIntent contIntent = PendingIntent.getActivity(
+                PreMainActivity.this, 0, notIntent, 0);
+        mBuilder.setContentIntent(contIntent);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
+
+    }
 
 }

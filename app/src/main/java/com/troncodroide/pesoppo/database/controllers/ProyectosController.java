@@ -58,13 +58,15 @@ public class ProyectosController {
 		return manager.query(ProyectoTableHelper.getUpdateString(p));
 	}
 
-	public Proyecto getProyecto(long id)
-			throws SqlExceptions.DuplicatedIdException,
-			SqlExceptions.IdNotFoundException {
+	public Proyecto getProyecto(long id) {
 		Cursor c = manager.select(ProyectoTableHelper.getSelectById(id));
 		c.moveToFirst();
 		Proyecto p = ProyectoTableHelper.getFromCursor(c); 
 		c.close();
+
+		ActividadesController ac = new ActividadesController(manager);
+		p.setActividades(ac.getActividades(p.getId()));
+
 		manager.close();
 		return p;
 	}
@@ -78,9 +80,10 @@ public class ProyectosController {
         c.close();
 
         ActividadesController ac = new ActividadesController(manager);
-        p.setActividades(ac.getActividades());
+        p.setActividades(ac.getActividades(p.getId()));
 
         manager.close();
+
 		return p;
 	}
 
@@ -89,13 +92,17 @@ public class ProyectosController {
 		List<Proyecto> proyectos = ProyectoTableHelper.getListFromCursor(c);
 		c.close();
 
+		for (Proyecto p : proyectos){
+			ActividadesController ac = new ActividadesController(manager);
+			p.setActividades(ac.getActividades(p.getId()));
+		}
 
 		manager.close();
 		return proyectos;
 	}
 	
-	public List<Actividad> getActividades(Proyecto p){
-		//Cursor c  = manager.select(sql);
-		return null;
+	private List<Actividad> getActividades(Proyecto p){
+		ActividadesController ac = new ActividadesController(manager);
+		return ac.getActividades(p.getId());
 	}
 }

@@ -71,22 +71,12 @@ public class ProjectActivity extends FragmentActivity {
             if (proyecto.getId() != -1) {
                 ProyectosController controller = new ProyectosController(
                         manager);
-                try {
-                    Message msg = new Message("Cargando...",
-                            NotificationsFragment.Notification_Loading, true, 4);
-                    sendNotification(msg);
-                    proyecto = controller.getProyecto(proyecto.getId());
-                    msg.closeMessage();
-                    sendNotification(msg);
-                } catch (DuplicatedIdException e) {
-                    sendNotification(new Message("Error: Id duplicada",
-                            NotificationsFragment.Notification_Error, false, 4));
-                    e.printStackTrace();
-                } catch (IdNotFoundException e) {
-                    sendNotification(new Message("Error: No encontrada",
-                            NotificationsFragment.Notification_Error, false, 4));
-                    e.printStackTrace();
-                }
+                Message msg = new Message("Cargando...",
+                        NotificationsFragment.Notification_Loading, true, 4);
+                sendNotification(msg);
+                proyecto = controller.getProyecto(proyecto.getId());
+                msg.closeMessage();
+                sendNotification(msg);
             }
         } else {
             proyecto = new Proyecto();
@@ -138,7 +128,7 @@ public class ProjectActivity extends FragmentActivity {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                        if (proyecto.getId()>0){
+                        if (proyecto.getId() > 0) {
                             sendNotification(new Message(
                                     "Proyecto añadido",
                                     NotificationsFragment.Notification_Ok,
@@ -223,8 +213,6 @@ public class ProjectActivity extends FragmentActivity {
         myFilteredResponse.putExtra(NotificationsFragment.data, msg);
         sendBroadcast(myFilteredResponse);
     }
-
-
 
 
     private boolean validateInputs() {

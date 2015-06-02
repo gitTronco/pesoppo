@@ -52,7 +52,7 @@ public class ActividadTableHelper {
 	}
 	public static String getSelectByName(String name) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
-				+ ActividadTableHelper.nombre + " = " + name;
+				+ ActividadTableHelper.nombre + " = '" + name + "'";
 		return sql;
 	}
 	public static Actividad getFromCursor(Cursor c) {

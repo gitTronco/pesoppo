@@ -67,5 +67,12 @@ public class InterrupcionesController {
 				manager.close();
 				return interrupciones;
 			}
+			public List<Interrupcion> getInterrupciones(long idActivity) {
+				Cursor c = manager.select(InterrupcionTableHelper.getSelectAllByActivity(idActivity));
+				List<Interrupcion> interrupciones= InterrupcionTableHelper.getListFromCursor(c);
+				c.close();
+				manager.close();
+				return interrupciones;
+			}
 
 }

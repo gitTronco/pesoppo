@@ -14,7 +14,10 @@ import android.view.View;
 import android.support.v4.widget.DrawerLayout;
 import android.view.animation.TranslateAnimation;
 
+import com.troncodroide.pesoppo.activities.ActivitiesFragment;
 import com.troncodroide.pesoppo.beans.Opcion;
+import com.troncodroide.pesoppo.calendar.CalendarFragment;
+import com.troncodroide.pesoppo.interruptions.InterruptionsFragment;
 import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 
@@ -58,12 +61,27 @@ public class InicioActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position.getId()) {
             case Opcion.OPTION_ACTIVITIES: {
+                mTitle = "Actividades";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, ActivitiesFragment.newInstance())
+                        .commit();
+                break;
+            }
+            case Opcion.OPTION_CALENDAR: {
+                mTitle = "Actividades";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, CalendarFragment.newInstance())
+                        .commit();
                 break;
             }
             case Opcion.OPTION_CONFIGURATION: {
                 break;
             }
             case Opcion.OPTION_INTERRUPTIONS: {
+                mTitle = "Interrupciones";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, InterruptionsFragment.newInstance())
+                        .commit();
                 break;
             }
             case Opcion.OPTION_KEYS: {

@@ -49,6 +49,6 @@ public class Interrupcion implements Serializable{
 	
 	@Override
 	public String toString() {
-		return Interrupcion.class.getSimpleName()+":"+id+"@"+nombre;
+		return nombre;
 	}
 }

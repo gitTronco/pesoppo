@@ -2,6 +2,8 @@ package com.troncodroide.pesoppo.beans;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.troncodroide.pesoppo.util.CalendarUtil;
 
@@ -29,10 +31,9 @@ public class Actividad implements Serializable{
 	private String tiempoEstimado;
 	private int unidades;
 	private boolean terminado;
+	private List<Interrupcion> interrupciones;
 	
-	public Actividad() {
-		this.fechaInicio = CalendarUtil.getDateString(Calendar.getInstance(), CalendarUtil.patternDate);
-	}
+	public Actividad() { this.fechaInicio = CalendarUtil.getDateString(Calendar.getInstance(), CalendarUtil.patternDate); }
 
 	public long getId() {
 		return id;
@@ -86,9 +87,7 @@ public class Actividad implements Serializable{
 		return tiempoDedicacion;
 	}
 
-	public void setTiempoDedicacion(String tiempoDedicacion) {
-		this.tiempoDedicacion = tiempoDedicacion;
-	}
+	public void setTiempoDedicacion(String tiempoDedicacion) { this.tiempoDedicacion = tiempoDedicacion; }
 
 	public String getTiempoEstimado() {
 		return tiempoEstimado;
@@ -113,7 +112,18 @@ public class Actividad implements Serializable{
 	public void setTerminado(boolean terminado) {
 		this.terminado = terminado;
 	}
-	
+
+	public List<Interrupcion> getInterrupciones() { return interrupciones; }
+
+	public void setInterrupciones(List<Interrupcion> interrupciones) { this.interrupciones = interrupciones; }
+
+    public void addInterrucion(Interrupcion i){
+        if (interrupciones==null){
+            interrupciones = new LinkedList<>();
+        }
+        interrupciones.add(i);
+    }
+
 	@Override
 	public String toString() {
 		return nombre;

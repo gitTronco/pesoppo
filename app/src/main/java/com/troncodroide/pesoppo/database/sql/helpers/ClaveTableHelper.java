@@ -3,6 +3,7 @@ package com.troncodroide.pesoppo.database.sql.helpers;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Clave;
 
 import android.content.ContentValues;
@@ -27,7 +28,14 @@ public class ClaveTableHelper {
 	
 	public static String getSelectById(long id) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
-				+ ClaveTableHelper.id + " = " + id;
+				+ ClaveTableHelper.id + " = '" + id +"'";
+		return sql;
+	}
+	public static String getSelectByIdActivity(long id) {
+		String sql = "SELECT " + ClaveTableHelper.tabla + "." + ClaveTableHelper.id + ClaveTableHelper.tabla + "." +ClaveTableHelper.nombre + "  FROM " + tabla + "," + ActividadTableHelper.tabla
+				+ " WHERE "
+				+ ActividadTableHelper.tabla + "." + ActividadTableHelper.idClave + " = " + ClaveTableHelper.tabla + "." + ClaveTableHelper.id + " AND "
+				+ ActividadTableHelper.tabla + "." + ActividadTableHelper.id + " = '" + id + "'";
 		return sql;
 	}
 	

@@ -47,7 +47,7 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
 
     private void loadActivities() {
         ActividadesController controller = new ActividadesController(new SqlLiteManager(this));
-        dh.actividades = controller.getActividades();
+        dh.actividades = controller.getActividades(dh.proyecto.getId());
     }
 
     private class ViewHolder {

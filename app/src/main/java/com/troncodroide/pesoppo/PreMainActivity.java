@@ -2,9 +2,11 @@ package com.troncodroide.pesoppo;
 
 import com.google.gson.Gson;
 import com.troncodroide.pesoppo.beans.Actividad;
+import com.troncodroide.pesoppo.beans.Interrupcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.configuracion.Configuracion;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
+import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.controllers.ProyectosController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
@@ -58,7 +60,7 @@ public class PreMainActivity<T> extends ActionBarActivity {
         t1.startAnimation(anim1);
         t2.startAnimation(anim2);
         t3.startAnimation(anim3);
-        //t4.startAnimation(anim4);
+        t4.startAnimation(anim4);
         Configuracion.setContext(getApplicationContext());
 
         anim4.setAnimationListener(new Animation.AnimationListener() {
@@ -79,7 +81,7 @@ public class PreMainActivity<T> extends ActionBarActivity {
                 PreMainActivity.this.finish();
             }
         });
-
+/*
         SqlLiteManager manager = new SqlLiteManager(this);
         ActividadesController aController = new ActividadesController(manager);
         ProyectosController pController = new ProyectosController(manager);
@@ -89,22 +91,42 @@ public class PreMainActivity<T> extends ActionBarActivity {
         a.setNombre("Leer");
         a.setDescripcion("Lecturas para la presnetación del proyecto de tfg");
         a.setIdClave(1);
-        a.setFechaInicio("22/04/2015");
+        a.setFechaInicio("22-04-2015");
         a.setIdProyecto(1);
         a.setTerminado(false);
         a.setTiempoDedicacion("1h");
         a.setTiempoEstimado("1h");
         a.setUnidades(3);
         Log.i("Activity", new Gson().toJson(a));
+        Interrupcion i = new Interrupcion();
+        i.setId(1);
+        i.setTiempo("15m");
+        i.setNombre("Cafe");
+        i.setDescripcion("Parada para el cafe de la mañana");
+        i.setIdActividad(1);
+        Interrupcion i2 = new Interrupcion();
+        i2.setId(2);
+        i2.setTiempo("15m");
+        i2.setNombre("Teléfono");
+        i2.setDescripcion("Llamada por incidencia con la web");
+        i2.setIdActividad(1);
+
+        InterrupcionesController ic = new InterrupcionesController(manager);
         try {
+            Log.i("AddInterruption",new Gson().toJson(i));
+            ic.saveInterrupcion(i);
+            Log.i("AddInterruption",new Gson().toJson(i2));
+            ic.saveInterrupcion(i2);
             aController.addActividad(a);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        Log.i("GetInterruptions", new Gson().toJson(ic.getInterrupciones()));
         Log.i("GetActivities", toString(aController.getActividades()));
         Log.i("GetProject1", new Gson().toJson(pController.getProyecto(1)));
         Log.i("GetProject2", new Gson().toJson(pController.getProyecto(2)));
-
+*/
     }
 
     private String toString(List array) {

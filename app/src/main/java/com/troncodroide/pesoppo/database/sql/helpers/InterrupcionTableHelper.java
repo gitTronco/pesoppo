@@ -30,7 +30,13 @@ public class InterrupcionTableHelper {
 	public static String getSelectAllString() {
 			String sql = "SELECT * FROM " + tabla + ";";
 		return sql;
-	}	
+	}
+
+	public static String getSelectAllByActivity(long idActivity) {
+			String sql = "SELECT * FROM " + tabla + " WHERE "
+					+ InterrupcionTableHelper.idActividad + " = '" + idActivity+"'";
+		return sql;
+	}
 	
 	public static String getSelectById(long id) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
@@ -75,8 +81,8 @@ public class InterrupcionTableHelper {
 				+ idActividad + " = '" + obj.getIdActividad()+ "'," 
 				+ descripcion + " = '" + obj.getDescripcion() + "'," 
 				+ nombre + " = '" + obj.getNombre() + "'," 
-				+ tiempoDedicado+ " = '" + obj.getTiempo() + "',"
-				+ " WHERE " + id + " = " + obj.getId() + ";";
+				+ tiempoDedicado+ " = '" + obj.getTiempo() + "'"
+				+ " WHERE " + id + " = '" + obj.getId() + "';";
 		return sql;
 	}
 	

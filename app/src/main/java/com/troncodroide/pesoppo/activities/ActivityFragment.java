@@ -132,7 +132,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_activities, container, false);
+        View view = inflater.inflate(R.layout.fragment_activity, container, false);
         vh = new ViewHolder();
         vh.claves = (AutoCompleteTextView) view.findViewById(R.id.activities_keys_autocomplete);
         vh.addActivity = (Button) view.findViewById(R.id.activities_keys_add);

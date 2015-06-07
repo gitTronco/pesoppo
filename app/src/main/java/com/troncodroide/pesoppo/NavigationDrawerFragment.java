@@ -107,6 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
         List<Opcion> opciones = new LinkedList<>();
         opciones.add(new Opcion("Mi estado",Opcion.OPTION_STATUS));
+        opciones.add(new Opcion("Calendario",Opcion.OPTION_CALENDAR));
         opciones.add(new Opcion("Proyectos",Opcion.OPTION_PROJECTS));
         opciones.add(new Opcion("Actividades",Opcion.OPTION_ACTIVITIES));
         opciones.add(new Opcion("Tags",Opcion.OPTION_KEYS));
@@ -310,6 +311,9 @@ public class NavigationDrawerFragment extends Fragment {
             switch (op.getId()){
                 case Opcion.OPTION_ACTIVITIES:
                     atv.setText(R.string.fa_tasks);
+                    break;
+                case Opcion.OPTION_CALENDAR:
+                    atv.setText(R.string.fa_calendar);
                     break;
                 case Opcion.OPTION_PROJECTS:
                     atv.setText(R.string.fa_cubes);

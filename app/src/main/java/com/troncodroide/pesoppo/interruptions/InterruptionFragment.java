@@ -1,36 +1,34 @@
 package com.troncodroide.pesoppo.interruptions;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Interrupcion;
-import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
-import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
+ * {@link InterruptionFragment.OnInterruptionsEventListener} interface
  * to handle interaction events.
- * Use the {@link InterruptionsFragment#newInstance} factory method to
+ * Use the {@link InterruptionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class InterruptionsFragment extends Fragment {
+public class InterruptionFragment extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-    private List<Interrupcion> data;
+    // TODO: Rename and change types of parameters
+    private Interrupcion data;
 
-    private Activity mActivity;
-    private SqlLiteManager manager;
+    private OnInterruptionsEventListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -39,45 +37,57 @@ public class InterruptionsFragment extends Fragment {
      * @return A new instance of fragment InterruptionsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static InterruptionsFragment newInstance() {
-        InterruptionsFragment fragment = new InterruptionsFragment();
+    public static InterruptionFragment newInstance() {
+        InterruptionFragment fragment = new InterruptionFragment();
         return fragment;
     }
 
-    public InterruptionsFragment() {
+    public InterruptionFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            data = (Interrupcion)getArguments().getSerializable(Interrupcion.class.getName());
+        }
+    }
 
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ListView view = (ListView)inflater.inflate(R.layout.fragment_interruptions, container, false);
-
-        InterrupcionesController controller = new InterrupcionesController(manager);
-
-        view.setAdapter(new ArrayAdapter<>(mActivity,android.R.layout.simple_list_item_1,controller.getInterrupciones()));
-
-        return view;
+        return inflater.inflate(R.layout.fragment_interruption, container, false);
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mActivity = activity;
-        manager = new SqlLiteManager(activity);
+        try {
+            mListener = (OnInterruptionsEventListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
     /**
@@ -90,4 +100,9 @@ public class InterruptionsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+    public interface OnInterruptionsEventListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+
 }

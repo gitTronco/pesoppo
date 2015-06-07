@@ -5,9 +5,11 @@ import java.util.List;
 import android.database.Cursor;
 
 import com.troncodroide.pesoppo.beans.Actividad;
+import com.troncodroide.pesoppo.beans.Interrupcion;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
 import com.troncodroide.pesoppo.database.sql.helpers.ActividadTableHelper;
+import com.troncodroide.pesoppo.database.sql.helpers.InterrupcionTableHelper;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
 
 public class ActividadesController {
@@ -36,7 +38,6 @@ public class ActividadesController {
 			manager.close();
 			throw new SqlExceptions.DuplicatedIdException();
 		}else{
-
 			long newId = manager.insert(ActividadTableHelper.tabla,
 					ActividadTableHelper.getInserContentValues(a));
 			a.setId(newId);
@@ -49,6 +50,9 @@ public class ActividadesController {
 
 	public boolean delActividad(Actividad a)
 			throws SqlExceptions.IdNotFoundException {
+        for (Interrupcion i : a.getInterrupciones()){
+            manager.query(InterrupcionTableHelper.getDeleteString(i));
+        }
 		return manager.query(ActividadTableHelper.getDeleteString(a));
 	}
 
@@ -65,7 +69,11 @@ public class ActividadesController {
 		c.moveToFirst();
 		Actividad p = ActividadTableHelper.getFromCursor(c); 
 		c.close();
-		manager.close();
+
+        InterrupcionesController ic = new InterrupcionesController(manager);
+        p.setInterrupciones(ic.getInterrupciones(p.getId()));
+
+        manager.close();
 		return p;
 	}
 
@@ -75,6 +83,10 @@ public class ActividadesController {
 		c.moveToFirst();
 		Actividad p = ActividadTableHelper.getFromCursor(c); 
 		c.close();
+
+		InterrupcionesController ic = new InterrupcionesController(manager);
+        p.setInterrupciones(ic.getInterrupciones(p.getId()));
+
 		manager.close();
 		return p;
 	}
@@ -83,6 +95,10 @@ public class ActividadesController {
 		Cursor c = manager.select(ActividadTableHelper.getSelectAllString());
 		List<Actividad> actividads = ActividadTableHelper.getListFromCursor(c);
 		c.close();
+        for (Actividad a:actividads){
+            InterrupcionesController ic = new InterrupcionesController(manager);
+            a.setInterrupciones(ic.getInterrupciones(a.getId()));
+        }
 		manager.close();
 		return actividads;
 	}
@@ -90,6 +106,10 @@ public class ActividadesController {
         Cursor c = manager.select(ActividadTableHelper.getSelectAllByProject(idProyecto));
         List<Actividad> actividads = ActividadTableHelper.getListFromCursor(c);
         c.close();
+        for (Actividad a:actividads){
+            InterrupcionesController ic = new InterrupcionesController(manager);
+            a.setInterrupciones(ic.getInterrupciones(a.getId()));
+        }
         manager.close();
         return actividads;
     }

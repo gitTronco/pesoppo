@@ -85,6 +85,7 @@ public class ActivitiesFragment extends Fragment implements OnClickListener {
         return view;
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

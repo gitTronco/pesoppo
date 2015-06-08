@@ -15,14 +15,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.animation.TranslateAnimation;
 
 import com.troncodroide.pesoppo.activities.ActivitiesFragment;
+import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Opcion;
+import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.calendar.CalendarFragment;
+import com.troncodroide.pesoppo.calendar.CalendarFragmentWrapper;
 import com.troncodroide.pesoppo.interruptions.InterruptionsFragment;
 import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 
 public class InicioActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -70,7 +73,7 @@ public class InicioActivity extends ActionBarActivity
             case Opcion.OPTION_CALENDAR: {
                 mTitle = "Actividades";
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, CalendarFragment.newInstance())
+                        .replace(R.id.container, CalendarFragmentWrapper.newInstance())
                         .commit();
                 break;
             }
@@ -168,5 +171,15 @@ public class InicioActivity extends ActionBarActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onProyectClick(Proyecto p) {
+        CalendarFragmentWrapper.newInstance().inflateResume(p);
+    }
+
+    @Override
+    public void onActivityClick(Actividad a) {
+        CalendarFragmentWrapper.newInstance().inflateResume(a);
     }
 }

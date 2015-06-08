@@ -21,7 +21,6 @@ public class AwesomeCalendarView extends CalendarView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //super.drawBackground(Canvas canvas);
-
     }
 
     public static class Evento{

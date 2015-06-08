@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import android.util.Log;
 
 public class CalendarUtil {
+	public static String patternDateDDMMYYYY  = "dd/MM/yyyy";
 	public static String patternDate  = "yyyy-MM-dd";
 	public static String patternTime  = "HH:mm:ss.SSS";
 	

@@ -28,7 +28,7 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_activity: {
-                ActivityFragment.newInstance((Actividad) view.getTag()).show(getSupportFragmentManager(),ActivityFragment.class.getSimpleName());
+                ActivityFragment.newInstance((Actividad) view.getTag(),dh.proyecto).show(getSupportFragmentManager(),ActivityFragment.class.getSimpleName());
             }
         }
     }

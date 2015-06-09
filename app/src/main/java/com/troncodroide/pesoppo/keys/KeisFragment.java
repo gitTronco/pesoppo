@@ -38,8 +38,6 @@ public class KeisFragment extends Fragment {
     public static KeisFragment newInstance() {
         if (mfragment ==null){
             mfragment = new KeisFragment();
-            Bundle args = new Bundle();
-            mfragment.setArguments(args);
         }
         return mfragment;
     }

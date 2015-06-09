@@ -24,6 +24,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class InterruptionsFragment extends Fragment {
+    private static InterruptionsFragment mFragment;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -40,8 +41,10 @@ public class InterruptionsFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static InterruptionsFragment newInstance() {
-        InterruptionsFragment fragment = new InterruptionsFragment();
-        return fragment;
+        if (mFragment==null){
+            mFragment = new InterruptionsFragment();
+        }
+        return mFragment;
     }
 
     public InterruptionsFragment() {

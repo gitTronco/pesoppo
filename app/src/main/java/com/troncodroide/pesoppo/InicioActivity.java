@@ -23,9 +23,10 @@ import com.troncodroide.pesoppo.calendar.CalendarFragmentWrapper;
 import com.troncodroide.pesoppo.interruptions.InterruptionsFragment;
 import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
+import com.troncodroide.pesoppo.status.StatusFragment;
 
 public class InicioActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -71,7 +72,7 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_CALENDAR: {
-                mTitle = "Actividades";
+                mTitle = "Calendario";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, CalendarFragmentWrapper.newInstance())
                         .commit();
@@ -102,6 +103,10 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_STATUS: {
+                mTitle = "Resumen";
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, StatusFragment.newInstance())
+                        .commit();
                 break;
             }
         }
@@ -117,9 +122,6 @@ public class InicioActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             //getMenuInflater().inflate(R.menu.main2, menu);
             restoreActionBar();
             return true;
@@ -132,11 +134,6 @@ public class InicioActivity extends ActionBarActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -181,5 +178,10 @@ public class InicioActivity extends ActionBarActivity
     @Override
     public void onActivityClick(Actividad a) {
         CalendarFragmentWrapper.newInstance().inflateResume(a);
+    }
+
+    @Override
+    public void onItemSelected(StatusFragment.StatusItem item) {
+        onNavigationDrawerItemSelected(new Opcion("",item.getType()));
     }
 }

@@ -16,10 +16,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Clave;
+import com.troncodroide.pesoppo.beans.Proyecto;
+import com.troncodroide.pesoppo.customviews.CustomToast;
+import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.controllers.ClavesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
@@ -53,15 +57,73 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                 //Crear la key añadirla o modificarla.
                 validateClave();
                 if (validateActivity()){
-                    //TODO guardar actividad;
+
+                    ActividadesController ac = new ActividadesController(manager);
+                    try {
+                        if (dh.actividad.getId()==0)
+                        dh.actividad.setId(ac.addActividad(dh.actividad));
+                        else
+                            try {
+                                ac.saveActividad(dh.actividad);
+                            } catch (SqlExceptions.IdNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                    } catch (SqlExceptions.DuplicatedIdException e) {
+                        e.printStackTrace();
+                    } catch (SqlExceptions.UniqueKeyException e) {
+                        e.printStackTrace();
+                    }
+                    if (dh.actividad.getId()!=0){
+                        ((Button)v).setText("Modificar");
+                    }else{
+                        CustomToast.makeText(getActivity(),"Guardado conéxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }
     }
 
     private boolean validateActivity() {
+        int validacion = 0;
+        String descripcion,fecha, nombre,t_estimado,t_dedicado,unidades;
 
-        return false;
+        descripcion = vh.descripcion.getText().toString().trim();
+        fecha = vh.fecha.getText().toString().trim();
+        nombre = vh.nombre.getText().toString().trim();
+        t_estimado = vh.estimacion.getText().toString().trim();
+        t_dedicado = vh.asigacion.getText().toString().trim();
+        unidades = vh.unidades.getText().toString().trim();
+
+        validacion += validate(vh.descripcion,descripcion);
+        validacion += validate(vh.fecha,fecha);
+        validacion += validate(vh.nombre,nombre);
+        validacion += validate(vh.estimacion,t_estimado);
+        validacion += validate(vh.asigacion,t_dedicado);
+        validacion += validate(vh.unidades,unidades);
+
+        if (validacion == 0){
+            if (dh.actividad==null){
+                dh.actividad = new Actividad();
+            }
+            dh.actividad.setNombre(nombre);
+            dh.actividad.setDescripcion(descripcion);
+            dh.actividad.setTiempoEstimado(t_estimado);
+            dh.actividad.setTiempoDedicacion(t_dedicado);
+            dh.actividad.setFechaInicio(fecha);
+            dh.actividad.setUnidades(Integer.parseInt(unidades));
+            dh.actividad.setIdClave(dh.selectedKey.getId());
+            dh.actividad.setIdProyecto(dh.proyecto.getId());
+        }
+
+        return validacion == 0;
+    }
+
+    private int validate(TextView v, String text){
+        if (text == null ||text.trim().length()<=0){
+            v.setError("Campo vacío");
+            return 1;
+        }
+        return 0;
     }
 
     private void validateClave() {
@@ -74,7 +136,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                 dh.selectedKey.setNombre(vh.claves.getText().toString().trim());
                 ClavesController controller  = new ClavesController(manager);
                 try {
-                    controller.addClave(dh.selectedKey);
+                    dh.selectedKey.setId(controller.addClave(dh.selectedKey));
                 } catch (SqlExceptions.DuplicatedIdException e) {
                     e.printStackTrace();
                 } catch (SqlExceptions.UniqueKeyException e) {
@@ -88,13 +150,14 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
 
     private class ViewHolder {
-        EditText nombre, descripcion, estimacion;
+        EditText nombre, descripcion, estimacion, asigacion, unidades;
         TextView fecha;
         AutoCompleteTextView claves;
         Button addActivity;
     }
 
     private static class DataHolder implements Serializable {
+        Proyecto proyecto;
         Actividad actividad;
         List<Clave> claves;
         Clave selectedKey;
@@ -108,10 +171,11 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
      * @return A new instance of fragment ActivitiesFragment.
      */
 
-    public static ActivityFragment newInstance(Actividad actividad) {
+    public static ActivityFragment newInstance(Actividad actividad, Proyecto proyecto) {
         ActivityFragment fragment = new ActivityFragment();
         Bundle args = new Bundle();
         args.putSerializable(Actividad.class.getName(), actividad);
+        args.putSerializable(Proyecto.class.getName(), proyecto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -126,6 +190,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         dh = new DataHolder();
         if (getArguments() != null) {
             dh.actividad = (Actividad) getArguments().getSerializable(Actividad.class.getName());
+            dh.proyecto = (Proyecto) getArguments().getSerializable(Proyecto.class.getName());
         }
     }
 
@@ -140,6 +205,8 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         vh.fecha = (TextView) view.findViewById(R.id.activities_keys_date);
         vh.descripcion = (EditText) view.findViewById(R.id.activities_keys_description);
         vh.estimacion = (EditText) view.findViewById(R.id.activities_keys_estimated_time);
+        vh.unidades= (EditText) view.findViewById(R.id.activities_keys_units);
+        vh.asigacion = (EditText) view.findViewById(R.id.activities_keys_asigned_time);
 
         vh.addActivity.setOnClickListener(this);
 

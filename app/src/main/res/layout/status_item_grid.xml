@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/negro"
+    android:minHeight="60dp"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <com.troncodroide.pesoppo.customviews.AwesomeTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/option_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/fa_cubes"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/blanco_palido"
+        android:textSize="90dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/option_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="80"
+            android:text="Item"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blanco_palido" />
+        <TextView
+            android:id="@+id/option_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="20"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blanco_palido" />
+    </LinearLayout>
+</LinearLayout>

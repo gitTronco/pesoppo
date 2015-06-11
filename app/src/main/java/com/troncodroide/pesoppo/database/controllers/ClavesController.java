@@ -70,8 +70,7 @@ public class ClavesController {
         return clave;
     }
 
-    public Clave getClave(String name)
-            throws SqlExceptions.UniqueKeyException {
+    public Clave getClave(String name) {
         Cursor c = manager.select(ClaveTableHelper.getSelectByName(name));
         c.moveToFirst();
         Clave p = ClaveTableHelper.getFromCursor(c);

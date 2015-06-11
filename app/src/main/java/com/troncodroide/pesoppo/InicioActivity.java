@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.animation.TranslateAnimation;
 
 import com.troncodroide.pesoppo.activities.ActivitiesFragment;
+import com.troncodroide.pesoppo.activities.ActivityFragment;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Opcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
@@ -26,7 +27,7 @@ import com.troncodroide.pesoppo.project.ProjectsFragment;
 import com.troncodroide.pesoppo.status.StatusFragment;
 
 public class InicioActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -183,5 +184,15 @@ public class InicioActivity extends ActionBarActivity
     @Override
     public void onItemSelected(StatusFragment.StatusItem item) {
         onNavigationDrawerItemSelected(new Opcion("",item.getType()));
+    }
+
+    @Override
+    public void onActivityCreated(Actividad actividad) {
+        ActivitiesFragment.newInstance().notifyDataHasChanged();
+    }
+
+    @Override
+    public void onActivityUpdate(Actividad actividad) {
+        ActivitiesFragment.newInstance().notifyDataHasChanged();
     }
 }

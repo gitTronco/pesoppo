@@ -81,7 +81,7 @@ public class NavigationDrawerFragment extends Fragment {
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION,0);
             mFromSavedInstanceState = true;
         }
 
@@ -115,6 +115,7 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new OptionsAdapter(getActivity(),opciones);
         mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        selectItem(mCurrentSelectedPosition);
         return mDrawerListView;
     }
 

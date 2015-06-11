@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,7 +21,7 @@ import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import java.io.Serializable;
 import java.util.List;
 
-public class ProjectShowActivity extends ActionBarActivity implements View.OnClickListener, ActivityFragment.OnFragmentInteractionListener {
+public class ProjectShowActivity extends ActionBarActivity implements View.OnClickListener, ActivityFragment.OnFragmentActivityListener {
     DataHolder dh;
     ViewHolder vh;
 
@@ -85,6 +86,14 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
         vh.actividades.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dh.actividades));
         vh.add.setTag(new Actividad());
         vh.add.setOnClickListener(this);
+
+        vh.actividades.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Actividad a = (Actividad)parent.getItemAtPosition(position);
+                ActivityFragment.newInstance(a,dh.proyecto).show(getSupportFragmentManager(),ActivityFragment.class.getSimpleName());
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(dh.proyecto.getNombre());

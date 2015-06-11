@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +38,7 @@ import java.util.List;
 
 /**
  * Activities that contain this fragment must implement the
- * {@link ActivityFragment.OnFragmentInteractionListener} interface
+ * {@link ActivityFragment.OnFragmentActivityListener} interface
  * to handle interaction events.
  * Use the {@link ActivityFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -48,7 +49,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     private ViewHolder vh;
     private SqlLiteManager manager;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentActivityListener mListener;
 
     @Override
     public void onClick(View v) {
@@ -112,7 +113,10 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             dh.actividad.setFechaInicio(fecha);
             dh.actividad.setUnidades(Integer.parseInt(unidades));
             dh.actividad.setIdClave(dh.selectedKey.getId());
-            dh.actividad.setIdProyecto(dh.proyecto.getId());
+
+            if (dh.proyecto!=null){
+                dh.actividad.setIdProyecto(dh.proyecto.getId());
+            }
         }
 
         return validacion == 0;
@@ -141,11 +145,14 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                     e.printStackTrace();
                 } catch (SqlExceptions.UniqueKeyException e) {
                     e.printStackTrace();
+                    dh.selectedKey = controller.getClave(dh.selectedKey.getNombre());
                 }
             }
         }else{
             dh.selectedKey = (Clave)vh.claves.getAdapter().getItem(vh.claves.getListSelection());
         }
+        Log.i("SelectedKey","ID:"+dh.selectedKey.getId()+" Key:"+dh.selectedKey.getNombre());
+
     }
 
 
@@ -249,6 +256,23 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             }
         });
 
+
+        if (dh.actividad.getId()!=0){
+            vh.unidades.setText(Integer.toString(dh.actividad.getUnidades()));
+            vh.nombre.setText(dh.actividad.getNombre());
+            vh.descripcion.setText(dh.actividad.getDescripcion());
+            for(Clave c :dh.claves){
+                if (c.getId() == dh.actividad.getIdClave()){
+                    dh.selectedKey = c;
+                    break;
+                }
+            }
+            if (dh.selectedKey!=null)vh.claves.setText(dh.selectedKey.getNombre());
+            vh.fecha.setText(dh.actividad.getFechaInicio());
+            vh.estimacion.setText(dh.actividad.getTiempoEstimado());
+            vh.asigacion.setText(dh.actividad.getTiempoDedicacion());
+        }
+
         return view;
     }
 
@@ -269,7 +293,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         super.onAttach(activity);
         manager = new SqlLiteManager(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnFragmentActivityListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -292,7 +316,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnFragmentActivityListener {
         public void onActivityCreated(Actividad actividad);
 
         public void onActivityUpdate(Actividad actividad);

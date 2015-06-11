@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -43,9 +44,14 @@ public class ActivitiesFragment extends Fragment implements OnClickListener {
     private SqlLiteManager manager;
 
     private Activity mActivity;
+    private ListView view;
 
     @Override
     public void onClick(View v) {
+    }
+
+    public void notifyDataHasChanged() {
+        ((ArrayAdapter)view.getAdapter()).notifyDataSetChanged();
     }
 
 
@@ -77,14 +83,20 @@ public class ActivitiesFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ListView view = (ListView) inflater.inflate(R.layout.fragment_activities, container, false);
+        view = (ListView) inflater.inflate(R.layout.fragment_activities, container, false);
         ActividadesController controller = new ActividadesController(manager);
 
         List<Actividad> actividads = controller.getActividades();
         view.setAdapter(new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, actividads));
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Actividad a = (Actividad) parent.getItemAtPosition(position);
+                ActivityFragment.newInstance(a,null).show(getChildFragmentManager(), ActivityFragment.class.getSimpleName());
+            }
+        });
         return view;
     }
-
 
     @Override
     public void onAttach(Activity activity) {

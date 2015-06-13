@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -61,23 +63,28 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
                     ActividadesController ac = new ActividadesController(manager);
                     try {
-                        if (dh.actividad.getId()==0)
-                        dh.actividad.setId(ac.addActividad(dh.actividad));
-                        else
+                        if (dh.actividad.getId()==0) {
+                            dh.actividad.setId(ac.addActividad(dh.actividad));
+                            CustomToast.makeText(getActivity(),"Creada con éxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
+                            mListener.onActivityCreated(dh.actividad);
+                        }else
                             try {
                                 ac.saveActividad(dh.actividad);
+                                CustomToast.makeText(getActivity(),"Guardado con éxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
+                                mListener.onActivityUpdate(dh.actividad);
                             } catch (SqlExceptions.IdNotFoundException e) {
                                 e.printStackTrace();
+                                CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
                             }
                     } catch (SqlExceptions.DuplicatedIdException e) {
                         e.printStackTrace();
+                        CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
                     } catch (SqlExceptions.UniqueKeyException e) {
                         e.printStackTrace();
+                        CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
                     }
                     if (dh.actividad.getId()!=0){
                         ((Button)v).setText("Modificar");
-                    }else{
-                        CustomToast.makeText(getActivity(),"Guardado conéxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -95,11 +102,13 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         t_dedicado = vh.asigacion.getText().toString().trim();
         unidades = vh.unidades.getText().toString().trim();
 
-        validacion += validate(vh.descripcion,descripcion);
+        validacion += validate(vh.descripcion, descripcion);
         validacion += validate(vh.fecha,fecha);
         validacion += validate(vh.nombre,nombre);
-        validacion += validate(vh.estimacion,t_estimado);
-        validacion += validate(vh.asigacion,t_dedicado);
+        validacion += validateTime(vh.estimacion, t_estimado);
+        if (t_dedicado.length() == 0)
+            t_dedicado = "0M";
+        validacion += validateTime(vh.asigacion,t_dedicado);
         validacion += validate(vh.unidades,unidades);
 
         if (validacion == 0){
@@ -113,6 +122,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             dh.actividad.setFechaInicio(fecha);
             dh.actividad.setUnidades(Integer.parseInt(unidades));
             dh.actividad.setIdClave(dh.selectedKey.getId());
+            dh.actividad.setTerminado(vh.terminado.isChecked());
 
             if (dh.proyecto!=null){
                 dh.actividad.setIdProyecto(dh.proyecto.getId());
@@ -126,6 +136,19 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         if (text == null ||text.trim().length()<=0){
             v.setError("Campo vacío");
             return 1;
+        }
+        return 0;
+    }
+
+    private int validateTime(TextView v, String text){
+        if (text == null ||text.trim().length()<=0){
+            v.setError("Campo vacío");
+            return 1;
+        }
+        if (!ValidateUtil.isValidTime(text)){
+            v.setError("Formato de fecha incorrecto, 1h 20m, 30m, 2h");
+            return 1;
+
         }
         return 0;
     }
@@ -155,12 +178,12 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
     }
 
-
     private class ViewHolder {
         EditText nombre, descripcion, estimacion, asigacion, unidades;
         TextView fecha;
         AutoCompleteTextView claves;
         Button addActivity;
+        CheckBox terminado;
     }
 
     private static class DataHolder implements Serializable {
@@ -214,6 +237,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         vh.estimacion = (EditText) view.findViewById(R.id.activities_keys_estimated_time);
         vh.unidades= (EditText) view.findViewById(R.id.activities_keys_units);
         vh.asigacion = (EditText) view.findViewById(R.id.activities_keys_asigned_time);
+        vh.terminado = (CheckBox) view.findViewById(R.id.activities_keys_terminado);
 
         vh.addActivity.setOnClickListener(this);
 
@@ -271,6 +295,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             vh.fecha.setText(dh.actividad.getFechaInicio());
             vh.estimacion.setText(dh.actividad.getTiempoEstimado());
             vh.asigacion.setText(dh.actividad.getTiempoDedicacion());
+            vh.terminado.setChecked(dh.actividad.isTerminado());
         }
 
         return view;

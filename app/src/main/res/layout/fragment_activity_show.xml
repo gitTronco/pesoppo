@@ -1,0 +1,45 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    tools:context="com.troncodroide.pesoppo.activities.ActivitiesFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartResumeActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="250dp" />
+
+        <com.troncodroide.pesoppo.customviews.AwesomeTextView
+            android:id="@+id/ativityshow_interruptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <com.troncodroide.pesoppo.customviews.AwesomeTextView
+            android:id="@+id/ativityshow_time_interruptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <com.troncodroide.pesoppo.customviews.AwesomeTextView
+            android:id="@+id/ativityshow_time_dedication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        <com.troncodroide.pesoppo.customviews.AwesomeTextView
+            android:id="@+id/ativityshow_time_estimado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
+
+    </LinearLayout>
+
+</ScrollView>

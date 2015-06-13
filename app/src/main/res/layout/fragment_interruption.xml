@@ -1,6 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.troncodroide.pesoppo.interruptions.InterruptionsFragment">
 
@@ -10,19 +10,23 @@
         android:minWidth="200dp"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/interruption_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre"/>
         <EditText
+            android:id="@+id/interruption_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="false"
             android:hint="Descripcion"/>
         <EditText
+            android:id="@+id/interruption_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Tiempo  2h 30m "/>
         <Button
+            android:id="@+id/interruption_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Añadir"/>

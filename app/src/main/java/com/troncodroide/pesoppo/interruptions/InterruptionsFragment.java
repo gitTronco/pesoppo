@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -32,6 +33,7 @@ public class InterruptionsFragment extends Fragment {
 
     private Activity mActivity;
     private SqlLiteManager manager;
+    private ListView view;
 
     /**
      * Use this factory method to create a new instance of
@@ -54,22 +56,33 @@ public class InterruptionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ListView view = (ListView)inflater.inflate(R.layout.fragment_interruptions, container, false);
-
-        InterrupcionesController controller = new InterrupcionesController(manager);
-
-        view.setAdapter(new ArrayAdapter<>(mActivity,android.R.layout.simple_list_item_1,controller.getInterrupciones()));
-
+        view = (ListView)inflater.inflate(R.layout.fragment_interruptions, container, false);
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Interrupcion i = (Interrupcion)parent.getItemAtPosition(position);
+                InterruptionFragment.newInstance(i).show(getChildFragmentManager(),"InterruptionFragment");
+            }
+        });
         return view;
     }
 
+    private void loadInterruptions() {
+        InterrupcionesController controller = new InterrupcionesController(manager);
+        view.setAdapter(new ArrayAdapter<>(mActivity,android.R.layout.simple_list_item_1,controller.getInterrupciones()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadInterruptions();
+    }
 
     @Override
     public void onAttach(Activity activity) {

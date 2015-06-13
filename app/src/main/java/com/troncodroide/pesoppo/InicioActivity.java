@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,18 +17,21 @@ import android.view.animation.TranslateAnimation;
 
 import com.troncodroide.pesoppo.activities.ActivitiesFragment;
 import com.troncodroide.pesoppo.activities.ActivityFragment;
+import com.troncodroide.pesoppo.activities.ActivityShowFragment;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Opcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.calendar.CalendarFragment;
 import com.troncodroide.pesoppo.calendar.CalendarFragmentWrapper;
+import com.troncodroide.pesoppo.interruptions.InterruptionFragment;
 import com.troncodroide.pesoppo.interruptions.InterruptionsFragment;
 import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 import com.troncodroide.pesoppo.status.StatusFragment;
+import com.troncodroide.pesoppo.util.ValidateUtil;
 
 public class InicioActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener, InterruptionFragment.OnInterruptionsEventListener,ActivitiesFragment.OnActivitiesEventListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -158,7 +162,7 @@ public class InicioActivity extends ActionBarActivity
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Salir");
             builder.setMessage("¿Desea salir?");
-            builder.setNegativeButton("No",null);
+            builder.setNegativeButton("No", null);
             builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -183,16 +187,31 @@ public class InicioActivity extends ActionBarActivity
 
     @Override
     public void onItemSelected(StatusFragment.StatusItem item) {
-        onNavigationDrawerItemSelected(new Opcion("",item.getType()));
+        onNavigationDrawerItemSelected(new Opcion("", item.getType()));
     }
 
     @Override
     public void onActivityCreated(Actividad actividad) {
-        ActivitiesFragment.newInstance().notifyDataHasChanged();
+        ActivitiesFragment.newInstance().onResume();
     }
 
     @Override
     public void onActivityUpdate(Actividad actividad) {
-        ActivitiesFragment.newInstance().notifyDataHasChanged();
+        ActivitiesFragment.newInstance().onResume();
+    }
+
+    @Override
+    public void onInterruptionUpdated() {
+        InterruptionsFragment.newInstance().onResume();
+    }
+
+    @Override
+    public void onActivityShowResume(Actividad a) {
+        mTitle = a.getNombre();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, ActivityShowFragment.newInstance(a))
+                .commit();
+
     }
 }

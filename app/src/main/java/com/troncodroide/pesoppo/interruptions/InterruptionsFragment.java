@@ -2,6 +2,7 @@ package com.troncodroide.pesoppo.interruptions;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.ListView;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Interrupcion;
+import com.troncodroide.pesoppo.beans.adapters.InterrupcionesAdapter;
 import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
+import com.troncodroide.pesoppo.exceptions.SqlExceptions;
 
 import java.util.List;
 
@@ -70,12 +73,33 @@ public class InterruptionsFragment extends Fragment {
                 InterruptionFragment.newInstance(i).show(getChildFragmentManager(),"InterruptionFragment");
             }
         });
+        view.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Interrupcion interrupcion = (Interrupcion) parent.getItemAtPosition(position);
+                Snackbar.make(parent, "Acciones:", Snackbar.LENGTH_LONG).setAction("borrar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        InterrupcionesController ic = new InterrupcionesController(manager);
+                        try {
+                            ic.delInterrupcion(interrupcion);
+                            loadInterruptions();
+                        } catch (SqlExceptions.IdNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).show();
+                return true;
+            }
+        });
+
         return view;
     }
 
     private void loadInterruptions() {
         InterrupcionesController controller = new InterrupcionesController(manager);
-        view.setAdapter(new ArrayAdapter<>(mActivity,android.R.layout.simple_list_item_1,controller.getInterrupciones()));
+        view.setAdapter(new InterrupcionesAdapter(mActivity, controller.getInterrupciones()));
+
     }
 
     @Override

@@ -90,6 +90,23 @@ public class ValidateUtil {
         }
     }
 
+    public static String getValidTime(int secndsTime){
+        String timestring = "0m";
+        int hours=0;
+        int minuts = secndsTime/60;
+        if (minuts>=60){
+            hours = minuts/60;
+            minuts -= (60*hours);
+        }
+        if (hours>0){
+            timestring = hours+"h " + minuts +"m";
+        }else{
+            timestring = minuts+"m";
+        }
+
+        return timestring;
+    }
+
     public static boolean isValidTime(String timeString) {
         String upperTime = timeString.trim().toUpperCase();
 
@@ -105,11 +122,11 @@ public class ValidateUtil {
         if (M<m){
             return false;
         }
+
         //h>0 y m<0
         //h<0 y m>0
         //h>0 y m>0 y b>0 y h<m
         //h>0 y m>0 y b>0 y h>m
-
 
         if (h > 0 && m < 0) {
             sv = 1;

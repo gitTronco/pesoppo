@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,7 @@ import android.view.animation.TranslateAnimation;
 
 import com.troncodroide.pesoppo.activities.ActivitiesFragment;
 import com.troncodroide.pesoppo.activities.ActivityFragment;
-import com.troncodroide.pesoppo.activities.ActivityShowFragment;
+import com.troncodroide.pesoppo.activities.ActivityShowActivity;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Opcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
@@ -28,10 +27,9 @@ import com.troncodroide.pesoppo.interruptions.InterruptionsFragment;
 import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 import com.troncodroide.pesoppo.status.StatusFragment;
-import com.troncodroide.pesoppo.util.ValidateUtil;
 
 public class InicioActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener, InterruptionFragment.OnInterruptionsEventListener,ActivitiesFragment.OnActivitiesEventListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener, InterruptionFragment.OnInterruptionsEventListener, ActivitiesFragment.OnActivitiesEventListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -70,6 +68,7 @@ public class InicioActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position.getId()) {
             case Opcion.OPTION_ACTIVITIES: {
+                clearBackstack();
                 mTitle = "Actividades";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, ActivitiesFragment.newInstance())
@@ -77,6 +76,7 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_CALENDAR: {
+                clearBackstack();
                 mTitle = "Calendario";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, CalendarFragmentWrapper.newInstance())
@@ -87,6 +87,7 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_INTERRUPTIONS: {
+                clearBackstack();
                 mTitle = "Interrupciones";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, InterruptionsFragment.newInstance())
@@ -94,6 +95,7 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_KEYS: {
+                clearBackstack();
                 mTitle = "Tags";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, KeisFragment.newInstance())
@@ -101,6 +103,7 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_PROJECTS: {
+                clearBackstack();
                 mTitle = "Proyecto";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, ProjectsFragment.newInstance())
@@ -108,10 +111,12 @@ public class InicioActivity extends ActionBarActivity
                 break;
             }
             case Opcion.OPTION_STATUS: {
+                clearBackstack();
                 mTitle = "Resumen";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, StatusFragment.newInstance())
                         .commit();
+
                 break;
             }
         }
@@ -136,9 +141,6 @@ public class InicioActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
     }
 
@@ -158,20 +160,33 @@ public class InicioActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
-        if (!getSupportFragmentManager().popBackStackImmediate()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Salir");
-            builder.setMessage("¿Desea salir?");
-            builder.setNegativeButton("No", null);
-            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            builder.create().show();
-        } else {
+        try {
+            if (!getSupportFragmentManager().popBackStackImmediate()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Salir");
+                builder.setMessage("¿Desea salir?");
+                builder.setNegativeButton("No", null);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                builder.create().show();
+            }
+            restoreActionBar();
+        /* else {
             super.onBackPressed();
+        }*/
+        } catch (IllegalStateException ex) {
+                clearBackstack();
+        }
+    }
+
+    private void clearBackstack(){
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
         }
     }
 
@@ -188,6 +203,7 @@ public class InicioActivity extends ActionBarActivity
     @Override
     public void onItemSelected(StatusFragment.StatusItem item) {
         onNavigationDrawerItemSelected(new Opcion("", item.getType()));
+        restoreActionBar();
     }
 
     @Override
@@ -207,11 +223,7 @@ public class InicioActivity extends ActionBarActivity
 
     @Override
     public void onActivityShowResume(Actividad a) {
-        mTitle = a.getNombre();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, ActivityShowFragment.newInstance(a))
-                .commit();
-
+        ActivityShowActivity.newInstance(this, a);
+        restoreActionBar();
     }
 }

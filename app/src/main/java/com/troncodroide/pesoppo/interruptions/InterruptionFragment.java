@@ -58,6 +58,7 @@ public class InterruptionFragment extends DialogFragment implements View.OnClick
                     controller.saveInterrupcion(data);
                     mListener.onInterruptionUpdated();
                 }
+                dismiss();
             } catch (SqlExceptions.IdNotFoundException e) {
                 e.printStackTrace();
             } catch (SqlExceptions.DuplicatedIdException e) {
@@ -105,7 +106,6 @@ public class InterruptionFragment extends DialogFragment implements View.OnClick
         if (!ValidateUtil.isValidTime(text)) {
             v.setError("Formato de fecha incorrecto, 1h 20m, 30m, 2h");
             return 1;
-
         }
         return 0;
     }

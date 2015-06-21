@@ -1,11 +1,14 @@
 package com.troncodroide.pesoppo.beans;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.troncodroide.pesoppo.util.CalendarUtil;
+import com.troncodroide.pesoppo.util.ValidateUtil;
 
 public class Actividad implements Serializable{
 	/*
@@ -123,6 +126,15 @@ public class Actividad implements Serializable{
         }
         interrupciones.add(i);
     }
+
+	public int getInterruptionTime(){
+		int time = 0;
+		if (interrupciones!=null)
+		for (Interrupcion i :interrupciones){
+			time += ValidateUtil.getValidTime(i.getTiempo());
+		}
+		return time;
+	}
 
 	@Override
 	public String toString() {

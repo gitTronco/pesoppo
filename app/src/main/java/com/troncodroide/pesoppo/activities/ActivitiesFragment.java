@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Actividad;
+import com.troncodroide.pesoppo.beans.adapters.ActividadesAdapter;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
@@ -82,7 +83,7 @@ public class ActivitiesFragment extends Fragment {
     private void loadActivities() {
         ActividadesController controller = new ActividadesController(manager);
         actividads = controller.getActividades();
-        view.setAdapter(new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, actividads));
+        view.setAdapter(new ActividadesAdapter(mActivity, actividads));
     }
 
     @Override

@@ -1,71 +1,130 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.troncodroide.pesoppo.activities.ActivitiesFragment"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    tools:context="com.troncodroide.pesoppo.activities.ActivitiesFragment">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/activities_keys_name"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre"/>
-        <AutoCompleteTextView
-            android:id="@+id/activities_keys_autocomplete"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activities_keys_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Clave"/>
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/activities_keys_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Clave" />
+        </android.support.design.widget.TextInputLayout>
+
         <TextView
-            android:theme="@style/Widget.AppCompat.EditText"
             android:id="@+id/activities_keys_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Fecha inicio"/>
-        <EditText
-            android:id="@+id/activities_keys_estimated_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tiempo estimado"/>
+            android:hint="Fecha inicio"
+            android:theme="@style/Widget.AppCompat.EditText" />
 
-        <EditText
-            android:id="@+id/activities_keys_asigned_time"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tiempo dedicado" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/activities_keys_units"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Unidades"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/activities_keys_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:minLines="3"
-            android:hint="Descripción"/>
-
-        <CheckBox
+            <EditText
+                android:id="@+id/activities_keys_estimated_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiempo estimado" />
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/activities_keys_wrapper_estimated_time_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Terminado"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <CheckBox
+                android:id="@+id/activities_keys_estimated_time_auto_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="100">
+
+                <TextView
+                    android:id="@+id/activities_keys_estimated_time_auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tiempo auto estimado"
+                    android:theme="@style/Widget.AppCompat.EditText"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activities_keys_asigned_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiempo dedicado" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activities_keys_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Unidades"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activities_keys_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:minLines="3"
+                android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
             android:id="@+id/activities_keys_terminado"
-            android:checked="false" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Terminado" />
 
         <Button
             android:id="@+id/activities_keys_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CREAR"
-            android:textColor="@color/blanco"
+            android:layout_marginTop="20dp"
             android:background="@color/azul"
-            android:layout_marginTop="20dp" />
-        </LinearLayout>
+            android:text="CREAR"
+            android:textColor="@color/blanco" />
+    </LinearLayout>
 
 </ScrollView>

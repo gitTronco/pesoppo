@@ -41,6 +41,14 @@
             android:name=".project.ProjectShowActivity"
             android:label="@string/title_activity_proyect_show" >
         </activity>
+        <activity
+            android:name=".activities.ActivityShowActivity"
+            android:label="@string/title_activity_proyect_show" >
+        </activity>
+        <activity
+            android:name=".interruptions.InterruptionShowActivity"
+            android:label="@string/title_activity_proyect_show" >
+        </activity>
     </application>
 
 </manifest>

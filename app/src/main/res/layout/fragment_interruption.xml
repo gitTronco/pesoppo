@@ -9,26 +9,45 @@
         android:layout_height="wrap_content"
         android:minWidth="200dp"
         android:orientation="vertical">
-        <EditText
-            android:id="@+id/interruption_name"
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre"/>
-        <EditText
-            android:id="@+id/interruption_description"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/interruption_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:hint="Descripcion"/>
-        <EditText
-            android:id="@+id/interruption_time"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/interruption_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripcion"
+                android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tiempo  2h 30m "/>
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/interruption_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tiempo  2h 30m " />
+        </android.support.design.widget.TextInputLayout>
+
         <Button
             android:id="@+id/interruption_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Añadir"/>
-        </LinearLayout>
+            android:text="Añadir" />
+    </LinearLayout>
 </ScrollView>

@@ -1,20 +1,24 @@
 package com.troncodroide.pesoppo.project;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.activities.ActivityFragment;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Proyecto;
+import com.troncodroide.pesoppo.beans.adapters.ActividadesAdapter;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 
@@ -83,7 +87,7 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
         vh.actividades = (ListView) findViewById(R.id.actividades_proyecto_listview);
         vh.add = (Button) findViewById(R.id.add_new_activity);
 
-        vh.actividades.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dh.actividades));
+        vh.actividades.setAdapter(new ActividadesAdapter(this,dh.actividades));
         vh.add.setTag(new Actividad());
         vh.add.setOnClickListener(this);
 
@@ -133,4 +137,6 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
 }

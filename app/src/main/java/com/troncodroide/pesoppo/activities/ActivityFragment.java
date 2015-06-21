@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,25 +18,20 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Clave;
 import com.troncodroide.pesoppo.beans.Proyecto;
-import com.troncodroide.pesoppo.customviews.CustomToast;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.controllers.ClavesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
 import com.troncodroide.pesoppo.fragments.DatePickerFragment;
-import com.troncodroide.pesoppo.fragments.MultiNotificationsFragment;
-import com.troncodroide.pesoppo.fragments.NotificationsFragment;
 import com.troncodroide.pesoppo.util.ValidateUtil;
 
 import java.io.Serializable;
@@ -52,6 +51,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     private SqlLiteManager manager;
 
     private OnFragmentActivityListener mListener;
+    private View parent;
 
     @Override
     public void onClick(View v) {
@@ -59,32 +59,34 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             case R.id.activities_keys_add: {
                 //Crear la key añadirla o modificarla.
                 validateClave();
-                if (validateActivity()){
+                if (validateActivity()) {
 
                     ActividadesController ac = new ActividadesController(manager);
                     try {
-                        if (dh.actividad.getId()==0) {
+                        if (dh.actividad.getId() == 0) {
                             dh.actividad.setId(ac.addActividad(dh.actividad));
-                            CustomToast.makeText(getActivity(),"Creada con éxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(parent, "Creada con éxito", Snackbar.LENGTH_LONG).show();
                             mListener.onActivityCreated(dh.actividad);
-                        }else
+                            dismiss();
+                        } else
                             try {
                                 ac.saveActividad(dh.actividad);
-                                CustomToast.makeText(getActivity(),"Guardado con éxito",CustomToast.TIPO_RESULT_OK, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(parent, "Guardado con éxito", Snackbar.LENGTH_LONG).show();
                                 mListener.onActivityUpdate(dh.actividad);
+                                dismiss();
                             } catch (SqlExceptions.IdNotFoundException e) {
                                 e.printStackTrace();
-                                CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(parent, "Hubo un error en el guardado", Snackbar.LENGTH_LONG).show();
                             }
                     } catch (SqlExceptions.DuplicatedIdException e) {
                         e.printStackTrace();
-                        CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(parent, "Hubo un error en el guardado", Snackbar.LENGTH_LONG).show();
                     } catch (SqlExceptions.UniqueKeyException e) {
                         e.printStackTrace();
-                        CustomToast.makeText(getActivity(),"Hubo un error en el guardado",CustomToast.TIPO_RESULT_NO, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(parent, "Hubo un error en el guardado", Snackbar.LENGTH_LONG).show();
                     }
-                    if (dh.actividad.getId()!=0){
-                        ((Button)v).setText("Modificar");
+                    if (dh.actividad.getId() != 0) {
+                        ((Button) v).setText("Modificar");
                     }
                 }
             }
@@ -93,7 +95,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
     private boolean validateActivity() {
         int validacion = 0;
-        String descripcion,fecha, nombre,t_estimado,t_dedicado,unidades;
+        String descripcion, fecha, nombre, t_estimado, t_dedicado, unidades;
 
         descripcion = vh.descripcion.getText().toString().trim();
         fecha = vh.fecha.getText().toString().trim();
@@ -103,16 +105,16 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         unidades = vh.unidades.getText().toString().trim();
 
         validacion += validate(vh.descripcion, descripcion);
-        validacion += validate(vh.fecha,fecha);
-        validacion += validate(vh.nombre,nombre);
+        validacion += validate(vh.fecha, fecha);
+        validacion += validate(vh.nombre, nombre);
         validacion += validateTime(vh.estimacion, t_estimado);
         if (t_dedicado.length() == 0)
-            t_dedicado = "0M";
-        validacion += validateTime(vh.asigacion,t_dedicado);
-        validacion += validate(vh.unidades,unidades);
+            t_dedicado = "0m";
+        validacion += validateTime(vh.asigacion, t_dedicado);
+        validacion += validate(vh.unidades, unidades);
 
-        if (validacion == 0){
-            if (dh.actividad==null){
+        if (validacion == 0) {
+            if (dh.actividad == null) {
                 dh.actividad = new Actividad();
             }
             dh.actividad.setNombre(nombre);
@@ -124,7 +126,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             dh.actividad.setIdClave(dh.selectedKey.getId());
             dh.actividad.setTerminado(vh.terminado.isChecked());
 
-            if (dh.proyecto!=null){
+            if (dh.proyecto != null) {
                 dh.actividad.setIdProyecto(dh.proyecto.getId());
             }
         }
@@ -132,36 +134,35 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         return validacion == 0;
     }
 
-    private int validate(TextView v, String text){
-        if (text == null ||text.trim().length()<=0){
+    private int validate(TextView v, String text) {
+        if (text == null || text.trim().length() <= 0) {
             v.setError("Campo vacío");
             return 1;
         }
         return 0;
     }
 
-    private int validateTime(TextView v, String text){
-        if (text == null ||text.trim().length()<=0){
+    private int validateTime(TextView v, String text) {
+        if (text == null || text.trim().length() <= 0) {
             v.setError("Campo vacío");
             return 1;
         }
-        if (!ValidateUtil.isValidTime(text)){
+        if (!ValidateUtil.isValidTime(text)) {
             v.setError("Formato de fecha incorrecto, 1h 20m, 30m, 2h");
             return 1;
-
         }
         return 0;
     }
 
     private void validateClave() {
 
-        if (vh.claves.getListSelection() == ListView.INVALID_POSITION){
-            if (vh.claves.getText().toString().trim().length()==0){
+        if (vh.claves.getListSelection() == ListView.INVALID_POSITION) {
+            if (vh.claves.getText().toString().trim().length() == 0) {
                 vh.claves.setError("Campo vacío");
-            }else{
+            } else {
                 dh.selectedKey = new Clave();
                 dh.selectedKey.setNombre(vh.claves.getText().toString().trim());
-                ClavesController controller  = new ClavesController(manager);
+                ClavesController controller = new ClavesController(manager);
                 try {
                     dh.selectedKey.setId(controller.addClave(dh.selectedKey));
                 } catch (SqlExceptions.DuplicatedIdException e) {
@@ -171,19 +172,20 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                     dh.selectedKey = controller.getClave(dh.selectedKey.getNombre());
                 }
             }
-        }else{
-            dh.selectedKey = (Clave)vh.claves.getAdapter().getItem(vh.claves.getListSelection());
+        } else {
+            dh.selectedKey = (Clave) vh.claves.getAdapter().getItem(vh.claves.getListSelection());
         }
-        Log.i("SelectedKey","ID:"+dh.selectedKey.getId()+" Key:"+dh.selectedKey.getNombre());
+        Log.i("SelectedKey", "ID:" + dh.selectedKey.getId() + " Key:" + dh.selectedKey.getNombre());
 
     }
 
     private class ViewHolder {
         EditText nombre, descripcion, estimacion, asigacion, unidades;
         TextView fecha;
+        TextView estimacion_auto;
         AutoCompleteTextView claves;
         Button addActivity;
-        CheckBox terminado;
+        CheckBox terminado, use_auto;
     }
 
     private static class DataHolder implements Serializable {
@@ -227,17 +229,19 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_activity, container, false);
+        parent = inflater.inflate(R.layout.fragment_activity, container, false);
         vh = new ViewHolder();
-        vh.claves = (AutoCompleteTextView) view.findViewById(R.id.activities_keys_autocomplete);
-        vh.addActivity = (Button) view.findViewById(R.id.activities_keys_add);
-        vh.nombre = (EditText) view.findViewById(R.id.activities_keys_name);
-        vh.fecha = (TextView) view.findViewById(R.id.activities_keys_date);
-        vh.descripcion = (EditText) view.findViewById(R.id.activities_keys_description);
-        vh.estimacion = (EditText) view.findViewById(R.id.activities_keys_estimated_time);
-        vh.unidades= (EditText) view.findViewById(R.id.activities_keys_units);
-        vh.asigacion = (EditText) view.findViewById(R.id.activities_keys_asigned_time);
-        vh.terminado = (CheckBox) view.findViewById(R.id.activities_keys_terminado);
+        vh.claves = (AutoCompleteTextView) parent.findViewById(R.id.activities_keys_autocomplete);
+        vh.addActivity = (Button) parent.findViewById(R.id.activities_keys_add);
+        vh.nombre = (EditText) parent.findViewById(R.id.activities_keys_name);
+        vh.fecha = (TextView) parent.findViewById(R.id.activities_keys_date);
+        vh.descripcion = (EditText) parent.findViewById(R.id.activities_keys_description);
+        vh.estimacion = (EditText) parent.findViewById(R.id.activities_keys_estimated_time);
+        vh.estimacion_auto = (TextView) parent.findViewById(R.id.activities_keys_estimated_time_auto);
+        vh.unidades = (EditText) parent.findViewById(R.id.activities_keys_units);
+        vh.asigacion = (EditText) parent.findViewById(R.id.activities_keys_asigned_time);
+        vh.terminado = (CheckBox) parent.findViewById(R.id.activities_keys_terminado);
+        vh.use_auto = (CheckBox) parent.findViewById(R.id.activities_keys_estimated_time_auto_cb);
 
         vh.addActivity.setOnClickListener(this);
 
@@ -254,7 +258,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         vh.claves.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     vh.claves.showDropDown();
                 }
             }
@@ -276,29 +280,61 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
                             vh.fecha.setError("Seleccione una fecha válida");
                         }
                     }
-                }).show(getChildFragmentManager(),DatePickerFragment.class.getSimpleName());
+                }).show(getChildFragmentManager(), DatePickerFragment.class.getSimpleName());
             }
         });
 
 
-        if (dh.actividad.getId()!=0){
+        if (dh.actividad.getId() != 0) {
             vh.unidades.setText(Integer.toString(dh.actividad.getUnidades()));
             vh.nombre.setText(dh.actividad.getNombre());
             vh.descripcion.setText(dh.actividad.getDescripcion());
-            for(Clave c :dh.claves){
-                if (c.getId() == dh.actividad.getIdClave()){
+            for (Clave c : dh.claves) {
+                if (c.getId() == dh.actividad.getIdClave()) {
                     dh.selectedKey = c;
                     break;
                 }
             }
-            if (dh.selectedKey!=null)vh.claves.setText(dh.selectedKey.getNombre());
+            if (dh.selectedKey != null) vh.claves.setText(dh.selectedKey.getNombre());
             vh.fecha.setText(dh.actividad.getFechaInicio());
             vh.estimacion.setText(dh.actividad.getTiempoEstimado());
             vh.asigacion.setText(dh.actividad.getTiempoDedicacion());
             vh.terminado.setChecked(dh.actividad.isTerminado());
         }
 
-        return view;
+        vh.unidades.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    int unidades = Integer.parseInt(s.toString());
+                    validateClave();
+                    calculateAutoEstimed(unidades);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        if (vh.unidades.getText().length() > 0) {
+            int unidades = Integer.parseInt(vh.unidades.getText().toString());
+            validateClave();
+            calculateAutoEstimed(unidades);
+        }
+        return parent;
+    }
+
+    private void calculateAutoEstimed(int unidades) {
+
+        ClavesController cc = new ClavesController(manager);
+        vh.estimacion_auto.setText(cc.getEstimatedTime(dh.selectedKey, unidades));
     }
 
     @Override
@@ -321,7 +357,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             mListener = (OnFragmentActivityListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnFragmentActivityListener");
         }
     }
 

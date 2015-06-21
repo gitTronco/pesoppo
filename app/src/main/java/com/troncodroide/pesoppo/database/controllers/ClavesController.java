@@ -1,5 +1,6 @@
 package com.troncodroide.pesoppo.database.controllers;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.database.Cursor;
@@ -8,8 +9,10 @@ import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Clave;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
+import com.troncodroide.pesoppo.database.sql.helpers.ActividadTableHelper;
 import com.troncodroide.pesoppo.database.sql.helpers.ClaveTableHelper;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
+import com.troncodroide.pesoppo.util.ValidateUtil;
 
 public class ClavesController {
     private SqlLiteManager manager;
@@ -101,5 +104,33 @@ public class ClavesController {
         c.close();
         manager.close();
         return claves;
+    }
+
+    private int getTime(Clave item) {
+        Cursor c = manager.select(ActividadTableHelper.getSelectAllByClave(item.getId()));
+        List<Actividad> actividades= ActividadTableHelper.getListFromCursor(c);
+        int estimado = 0;
+        int num = 0;
+        for (Actividad a :actividades){
+            estimado+= ValidateUtil.getValidTime(a.getTiempoDedicacion())/a.getUnidades();
+            num++;
+        }
+
+        c.close();
+        manager.close();
+        if (num==0)
+            return 0;
+        return (estimado / num);
+    }
+
+    public String getEstimatedTime(Clave item) {
+        int estimado = getTime(item);
+        return ValidateUtil.getValidTime(estimado);
+    }
+
+    public String getEstimatedTime(Clave item, int units) {
+        int estimado = getTime(item);
+
+        return ValidateUtil.getValidTime(estimado * units);
     }
 }

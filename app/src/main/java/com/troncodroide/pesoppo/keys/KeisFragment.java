@@ -2,17 +2,23 @@ package com.troncodroide.pesoppo.keys;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Clave;
+import com.troncodroide.pesoppo.beans.Interrupcion;
+import com.troncodroide.pesoppo.beans.adapters.ClavesAdapter;
 import com.troncodroide.pesoppo.database.controllers.ClavesController;
+import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
+import com.troncodroide.pesoppo.exceptions.SqlExceptions;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,12 +37,12 @@ public class KeisFragment extends Fragment {
 
     ListView lv;
 
-    private static class DataHolder implements Serializable{
+    private static class DataHolder implements Serializable {
         List<Clave> claves;
     }
 
     public static KeisFragment newInstance() {
-        if (mfragment ==null){
+        if (mfragment == null) {
             mfragment = new KeisFragment();
         }
         return mfragment;
@@ -50,13 +56,13 @@ public class KeisFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
-            dh = (DataHolder)(savedInstanceState.getSerializable(DataHolder.class.getName()));
+            dh = (DataHolder) (savedInstanceState.getSerializable(DataHolder.class.getName()));
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(DataHolder.class.getName(),dh);
+        outState.putSerializable(DataHolder.class.getName(), dh);
     }
 
     @Override
@@ -64,15 +70,41 @@ public class KeisFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         lv = (ListView) inflater.inflate(R.layout.fragment_keis, container, false);
-        if (savedInstanceState==null){
-            dh =new DataHolder();
+        if (savedInstanceState == null) {
+            dh = new DataHolder();
             ClavesController controller = new ClavesController(new SqlLiteManager(getActivity()));
             dh.claves = controller.getClaves();
         }
 
-        lv.setAdapter(new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,dh.claves));
+        lv.setAdapter(new ClavesAdapter(getActivity(), dh.claves));
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Clave clave = (Clave) parent.getItemAtPosition(position);
+                Snackbar.make(parent, "Acciones:", Snackbar.LENGTH_LONG).setAction("borrar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ClavesController ic = new ClavesController(new SqlLiteManager(getActivity()));
+                        try {
+                            ic.delClave(clave);
+                            loadClaves();
+                        } catch (SqlExceptions.IdNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).show();
+                return true;
+            }
+        });
 
         return lv;
+    }
+
+    private void loadClaves() {
+        ClavesController controller = new ClavesController(new SqlLiteManager(getActivity()));
+        dh.claves = controller.getClaves();
+        lv.setAdapter(new ClavesAdapter(getActivity(), dh.claves));
+
     }
 
     @Override

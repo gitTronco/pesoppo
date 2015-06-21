@@ -88,12 +88,12 @@
                 android:textColor="@color/gris"
                 android:layout_marginRight="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Actividad reciente:"/>
+                android:text="Última:"/>
             <TextView
                 android:id="@+id/proyecto_item_last_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/rojo_claro"
+                android:textColor="@color/gris"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@null"/>
         </LinearLayout>

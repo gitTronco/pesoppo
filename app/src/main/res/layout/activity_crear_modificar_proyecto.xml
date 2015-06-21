@@ -36,16 +36,21 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp" >
-
-            <EditText
-                android:id="@+id/editTextNombre"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/handrwritteedittext"
-                android:ems="10"
-                android:hint="Nombre"
-                android:padding="10dp" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/handrwritteedittext"
+                    android:ems="10"
+                    android:hint="Nombre"
+                    android:padding="10dp" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/butonFechaInicio"
@@ -57,6 +62,10 @@
                 android:gravity="left"
                 android:hint="Fecha de Inicio (DD/MM/AAAA)"
                 android:padding="10dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/editTextDescripcion"
@@ -71,6 +80,7 @@
 
                 <requestFocus />
             </EditText>
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -32,8 +33,9 @@ public class CalendarFragment extends CaldroidFragment {
 
     private static CalendarFragment fragment;
     private SqlLiteManager manager;
-    private HashMap<Date, Object> elements;
+    private HashMap<Date, List<Object>> elements;
     private OnCalendarEventsListener mListener;
+
     /**
      * Use this factory method to create a new instance of
      *
@@ -65,7 +67,7 @@ public class CalendarFragment extends CaldroidFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mListener = (OnCalendarEventsListener)activity;
+        mListener = (OnCalendarEventsListener) activity;
         manager = new SqlLiteManager(activity);
     }
 
@@ -92,9 +94,16 @@ public class CalendarFragment extends CaldroidFragment {
                 for (Actividad a : p.getActividades()) {
                     Calendar ac = CalendarUtil.parseDateString(a.getFechaInicio(), CalendarUtil.patternDateDDMMYYYY);
                     days.put(ac.getTime(), R.color.azul_claro);
-                    elements.put(ac.getTime(),a);
+                    if (elements.get(ac.getTime()) == null) {
+                        elements.put(ac.getTime(), new LinkedList<Object>());
+                    }
+                    elements.get(ac.getTime()).add(a);
+
                 }
-                elements.put(c.getTime(),p);
+                if (elements.get(c.getTime()) == null) {
+                    elements.put(c.getTime(), new LinkedList<Object>());
+                }
+                elements.get(c.getTime()).add(p);
                 days.put(c.getTime(), R.color.azul);
             } catch (ParseException ex) {
                 ex.printStackTrace();
@@ -105,14 +114,21 @@ public class CalendarFragment extends CaldroidFragment {
         setCaldroidListener(new CaldroidListener() {
             @Override
             public void onSelectDate(Date date, View view) {
-                Object ob = elements.get(date);
-                if (ob instanceof Proyecto){
-                    Log.i("Proyecto",ob.toString());
-                    mListener.onProyectClick((Proyecto)ob);
-                }else if (ob instanceof Actividad){
-                    Log.i("Actividad", ob.toString());
-                    mListener.onActivityClick((Actividad) ob);
+                List<Object> ob = elements.get(date);
+                if (ob != null) {
+                    if (ob.size() == 1) {
+                        Object object = ob.get(0);
+                        if (object instanceof Proyecto) {
+                            Log.i("Proyecto", object.toString());
+                            mListener.onProyectClick((Proyecto) object);
+                        } else if (object instanceof Actividad) {
+                            Log.i("Actividad", object.toString());
+                            mListener.onActivityClick((Actividad) object);
 
+                        }
+                    } else {
+                        mListener.onListClick(ob);
+                    }
                 }
             }
         });
@@ -124,8 +140,11 @@ public class CalendarFragment extends CaldroidFragment {
         super.onSaveInstanceState(outState);
     }
 
-    public interface OnCalendarEventsListener{
-        public void onProyectClick(Proyecto p);
-        public void onActivityClick(Actividad a);
+    public interface OnCalendarEventsListener {
+        void onProyectClick(Proyecto p);
+
+        void onActivityClick(Actividad a);
+
+        void onListClick(List lista);
     }
 }

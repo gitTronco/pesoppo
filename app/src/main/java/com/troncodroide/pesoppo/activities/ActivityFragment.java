@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -119,7 +120,10 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             }
             dh.actividad.setNombre(nombre);
             dh.actividad.setDescripcion(descripcion);
-            dh.actividad.setTiempoEstimado(t_estimado);
+            if (vh.use_auto.isChecked()){
+                dh.actividad.setTiempoEstimado(dh.estimated_auto);
+            }else
+                dh.actividad.setTiempoEstimado(t_estimado);
             dh.actividad.setTiempoDedicacion(t_dedicado);
             dh.actividad.setFechaInicio(fecha);
             dh.actividad.setUnidades(Integer.parseInt(unidades));
@@ -193,6 +197,7 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         Actividad actividad;
         List<Clave> claves;
         Clave selectedKey;
+        String estimated_auto;
     }
 
     /**
@@ -245,6 +250,15 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
         vh.addActivity.setOnClickListener(this);
 
+        vh.use_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    vh.estimacion.setActivated(!isChecked);
+                    vh.estimacion_auto.setActivated(isChecked);
+                }
+            }
+        });
         ClavesController controller = new ClavesController(manager);
         dh.claves = controller.getClaves();
 
@@ -334,7 +348,8 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     private void calculateAutoEstimed(int unidades) {
 
         ClavesController cc = new ClavesController(manager);
-        vh.estimacion_auto.setText(cc.getEstimatedTime(dh.selectedKey, unidades));
+        dh.estimated_auto = cc.getEstimatedTime(dh.selectedKey, unidades);
+        vh.estimacion_auto.setText(dh.estimated_auto);
     }
 
     @Override
@@ -382,5 +397,4 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
 
         public void onActivityUpdate(Actividad actividad);
     }
-
 }

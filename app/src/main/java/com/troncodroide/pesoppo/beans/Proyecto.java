@@ -98,6 +98,30 @@ public class Proyecto implements Serializable {
         else return null;
     }
 
+    public int getDedicatedTime(){
+        int dedicatedtime = 0;
+        for (Actividad a : actividades) {
+            dedicatedtime += ValidateUtil.getValidTime(a.getTiempoDedicacion());
+        }
+        return dedicatedtime;
+    }
+
+    public int getEstimedTime(){
+        int stimedtime = 0;
+        for (Actividad a : actividades) {
+            stimedtime += ValidateUtil.getValidTime(a.getTiempoEstimado());
+        }
+        return stimedtime;
+    }
+
+    public int getInterruptionsTime(){
+        int interruptionTime = 0;
+        for (Actividad a : actividades) {
+            interruptionTime += a.getInterruptionTime();
+        }
+        return interruptionTime;
+    }
+
     @Override
     public String toString() {
         return id + ":" + nombre;

@@ -28,6 +28,8 @@ import com.troncodroide.pesoppo.keys.KeisFragment;
 import com.troncodroide.pesoppo.project.ProjectsFragment;
 import com.troncodroide.pesoppo.status.StatusFragment;
 
+import java.util.List;
+
 public class InicioActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CalendarFragment.OnCalendarEventsListener, StatusFragment.OnStatusFragmentListener, ActivityFragment.OnFragmentActivityListener, InterruptionFragment.OnInterruptionsEventListener, ActivitiesFragment.OnActivitiesEventListener {
 
@@ -198,6 +200,10 @@ public class InicioActivity extends ActionBarActivity
     @Override
     public void onActivityClick(Actividad a) {
         CalendarFragmentWrapper.newInstance().inflateResume(a);
+    }
+    @Override
+    public void onListClick(List l) {
+        CalendarFragmentWrapper.newInstance().inflateList(l);
     }
 
     @Override

@@ -51,7 +51,7 @@ import java.util.List;
  * Use the {@link ActivityShowActivity#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ActivityShowActivity extends ActionBarActivity implements OnClickListener, ActivityFragment.OnFragmentActivityListener,InterruptionFragment.OnInterruptionsEventListener {
+public class ActivityShowActivity extends ActionBarActivity implements OnClickListener, ActivityFragment.OnFragmentActivityListener, InterruptionFragment.OnInterruptionsEventListener {
 
     private DataHolder dh;
     private ViewHolder vh;
@@ -86,7 +86,7 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
     private class ViewHolder {
         PieChart pc;
         ListView listaInterrupciones;
-        AwesomeTextView interrupciones, tiempodedicado,tienmpoestimado;
+        AwesomeTextView interrupciones, tiempodedicado, tienmpoestimado;
         AwesomeButton addInterruption;
     }
 
@@ -94,8 +94,8 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
         Actividad actividad;
     }
 
-    public static void newInstance(Activity act,Actividad actividad) {
-        Intent args = new Intent(act,ActivityShowActivity.class);
+    public static void newInstance(Activity act, Actividad actividad) {
+        Intent args = new Intent(act, ActivityShowActivity.class);
         args.putExtra(Actividad.class.getName(), actividad);
         act.startActivityForResult(args, SHOW_ACT_REQUEST);
     }
@@ -113,17 +113,17 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
         if (getIntent() != null) {
             dh.actividad = (Actividad) getIntent().getSerializableExtra(Actividad.class.getName());
         }
-        if (getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             ActionBar ab = getSupportActionBar();
             ab.setDisplayHomeAsUpEnabled(true);
         }
         vh = new ViewHolder();
-        vh.pc= (PieChart) findViewById(R.id.chartResumeActivity);
-        vh.interrupciones= (AwesomeTextView) findViewById(R.id.ativityshow_interruptions);
-        vh.tiempodedicado= (AwesomeTextView) findViewById(R.id.ativityshow_time_dedication);
-        vh.tienmpoestimado= (AwesomeTextView) findViewById(R.id.ativityshow_time_estimado);
-        vh.listaInterrupciones= (ExpandedListView) findViewById(R.id.activityshow_list_interruptions);
-        vh.addInterruption= (AwesomeButton) findViewById(R.id.ativityshow_add_interruption);
+        vh.pc = (PieChart) findViewById(R.id.chartResumeActivity);
+        vh.interrupciones = (AwesomeTextView) findViewById(R.id.ativityshow_interruptions);
+        vh.tiempodedicado = (AwesomeTextView) findViewById(R.id.ativityshow_time_dedication);
+        vh.tienmpoestimado = (AwesomeTextView) findViewById(R.id.ativityshow_time_estimado);
+        vh.listaInterrupciones = (ExpandedListView) findViewById(R.id.activityshow_list_interruptions);
+        vh.addInterruption = (AwesomeButton) findViewById(R.id.ativityshow_add_interruption);
         vh.addInterruption.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,16 +135,16 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
         vh.listaInterrupciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Interrupcion interrupcion = (Interrupcion)parent.getItemAtPosition(position);
-                InterruptionShowActivity.newInstance(ActivityShowActivity.this,interrupcion);
+                Interrupcion interrupcion = (Interrupcion) parent.getItemAtPosition(position);
+                InterruptionShowActivity.newInstance(ActivityShowActivity.this, interrupcion);
             }
         });
 
         vh.listaInterrupciones.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final Interrupcion interrupcion = (Interrupcion)parent.getItemAtPosition(position);
-                Snackbar.make(parent,"Acciones:",Snackbar.LENGTH_LONG).setAction("borrar", new OnClickListener() {
+                final Interrupcion interrupcion = (Interrupcion) parent.getItemAtPosition(position);
+                Snackbar.make(parent, "Acciones:", Snackbar.LENGTH_LONG).setAction("borrar", new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         InterrupcionesController ic = new InterrupcionesController(manager);
@@ -162,29 +162,31 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
         });
         loadUIData();
     }
-private void refreshActividad(){
-    ActividadesController ac = new ActividadesController(manager);
-    try {
-        dh.actividad = ac.getActividad(dh.actividad.getId());
-    } catch (SqlExceptions.DuplicatedIdException | SqlExceptions.IdNotFoundException e) {
-        e.printStackTrace();
+
+    private void refreshActividad() {
+        ActividadesController ac = new ActividadesController(manager);
+        try {
+            dh.actividad = ac.getActividad(dh.actividad.getId());
+        } catch (SqlExceptions.DuplicatedIdException | SqlExceptions.IdNotFoundException e) {
+            e.printStackTrace();
+        }
     }
-}
+
     private void loadUIData() {
-        if (getSupportActionBar()!=null) {
+        if (getSupportActionBar() != null) {
             ActionBar ab = getSupportActionBar();
             ab.setTitle(dh.actividad.getNombre());
         }
 
         exampleData();
         List<Interrupcion> interrupciones = dh.actividad.getInterrupciones();
-        if (interrupciones!=null && interrupciones.size()>0) {
+        if (interrupciones != null && interrupciones.size() > 0) {
             String tiempoInterrupciones = ValidateUtil.getValidTime(dh.actividad.getInterruptionTime());
             vh.interrupciones.setText("Total: " + tiempoInterrupciones);
         }
-        vh.listaInterrupciones.setAdapter(new InterrupcionesAdapter(this,interrupciones));
+        vh.listaInterrupciones.setAdapter(new InterrupcionesAdapter(this, interrupciones));
         vh.tiempodedicado.setText("Dedicación: " + dh.actividad.getTiempoDedicacion());
-        vh.tienmpoestimado.setText("Estimación: "+ dh.actividad.getTiempoEstimado());
+        vh.tienmpoestimado.setText("Estimación: " + dh.actividad.getTiempoEstimado());
     }
 
     @Override
@@ -209,7 +211,7 @@ private void refreshActividad(){
 
     }
 
-    private void exampleData(){
+    private void exampleData() {
         vh.pc.setUsePercentValues(true);
         vh.pc.setDescription("");
 
@@ -255,12 +257,12 @@ private void refreshActividad(){
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-        boolean hasInterruptions = (dh.actividad.getInterrupciones()!=null && dh.actividad.getInterrupciones().size()>0);
+        boolean hasInterruptions = (dh.actividad.getInterrupciones() != null && dh.actividad.getInterrupciones().size() > 0);
         int t_dedicado = ValidateUtil.getValidTime(dh.actividad.getTiempoDedicacion());
         int t_estimado = ValidateUtil.getValidTime(dh.actividad.getTiempoEstimado());
-        int diferencia = t_estimado-t_dedicado;
+        int diferencia = t_estimado - t_dedicado;
 
-        if (hasInterruptions){
+        if (hasInterruptions) {
             t_dedicado -= dh.actividad.getInterruptionTime();
         }
 
@@ -269,18 +271,18 @@ private void refreshActividad(){
         xVals.add("Dedicado");
         colors.add(getResources().getColor(R.color.verde));
         //yVals1.add(new Entry(t_estimado, 1));
-        if (diferencia<0){
+        if (diferencia < 0) {
             int sobrestimado = Math.abs(diferencia);
             xVals.add("SobreDedicado");
             yVals1.add(new Entry(sobrestimado, 1));
             colors.add(getResources().getColor(R.color.rojo));
-        }else{
+        } else {
             xVals.add("Restante");
             yVals1.add(new Entry(diferencia, 1));
             colors.add(getResources().getColor(R.color.azul_claro));
         }
 
-        if (hasInterruptions){
+        if (hasInterruptions) {
             yVals1.add(new Entry(dh.actividad.getInterruptionTime(), 2));
             xVals.add("Interrupciones");
             colors.add(getResources().getColor(R.color.naranja));
@@ -321,7 +323,7 @@ private void refreshActividad(){
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            ActivityFragment.newInstance(dh.actividad,null).show(getSupportFragmentManager(),"dialogActivityEdit");
+            ActivityFragment.newInstance(dh.actividad, null).show(getSupportFragmentManager(), "dialogActivityEdit");
 
             return true;
         }

@@ -37,8 +37,6 @@ import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
 import com.troncodroide.pesoppo.interruptions.InterruptionFragment;
-import com.troncodroide.pesoppo.interruptions.InterruptionShowActivity;
-import com.troncodroide.pesoppo.project.ProjectActivity;
 import com.troncodroide.pesoppo.util.ValidateUtil;
 
 import java.io.Serializable;
@@ -136,7 +134,7 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Interrupcion interrupcion = (Interrupcion) parent.getItemAtPosition(position);
-                InterruptionShowActivity.newInstance(ActivityShowActivity.this, interrupcion);
+                InterruptionFragment.newInstance(interrupcion).show(getSupportFragmentManager(), InterruptionFragment.class.getSimpleName());
             }
         });
 
@@ -323,7 +321,7 @@ public class ActivityShowActivity extends ActionBarActivity implements OnClickLi
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            ActivityFragment.newInstance(dh.actividad, null).show(getSupportFragmentManager(), "dialogActivityEdit");
+            ActivityFragment.newInstance(dh.actividad).show(getSupportFragmentManager(), "dialogActivityEdit");
 
             return true;
         }

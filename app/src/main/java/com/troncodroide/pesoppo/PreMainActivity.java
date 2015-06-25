@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Interrupcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
-import com.troncodroide.pesoppo.configuracion.Configuracion;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.controllers.ProyectosController;
@@ -61,7 +60,6 @@ public class PreMainActivity<T> extends ActionBarActivity {
         t2.startAnimation(anim2);
         t3.startAnimation(anim3);
         t4.startAnimation(anim4);
-        Configuracion.setContext(getApplicationContext());
 
         anim4.setAnimationListener(new Animation.AnimationListener() {
 

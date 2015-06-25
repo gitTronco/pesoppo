@@ -26,7 +26,6 @@ import android.widget.EditText;
 public class ProjectActivity extends FragmentActivity {
     public static final int RESULT_PROJECT_OK = 12;
 
-
     private EditText nombreEdit;
     private Button datePikerButton;
     private Button saveButton;

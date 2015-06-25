@@ -11,12 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -29,20 +27,14 @@ import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.activities.ActivityFragment;
 import com.troncodroide.pesoppo.activities.ActivityShowActivity;
 import com.troncodroide.pesoppo.beans.Actividad;
-import com.troncodroide.pesoppo.beans.Interrupcion;
 import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.beans.adapters.ActividadesAdapter;
-import com.troncodroide.pesoppo.beans.adapters.InterrupcionesAdapter;
 import com.troncodroide.pesoppo.customviews.AwesomeButton;
 import com.troncodroide.pesoppo.customviews.AwesomeTextView;
-import com.troncodroide.pesoppo.customviews.ExpandedListView;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
-import com.troncodroide.pesoppo.database.controllers.InterrupcionesController;
 import com.troncodroide.pesoppo.database.controllers.ProyectosController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
 import com.troncodroide.pesoppo.exceptions.SqlExceptions;
-import com.troncodroide.pesoppo.interruptions.InterruptionFragment;
-import com.troncodroide.pesoppo.interruptions.InterruptionShowActivity;
 import com.troncodroide.pesoppo.util.ValidateUtil;
 
 import java.io.Serializable;
@@ -58,7 +50,9 @@ public class ProjectShowActivity extends ActionBarActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.projectshow_add_activity: {
-                ActivityFragment.newInstance((Actividad) view.getTag(), dh.proyecto).show(getSupportFragmentManager(), ActivityFragment.class.getSimpleName());
+                Actividad act = new Actividad();
+                act.setIdProyecto(dh.proyecto.getId());
+                ActivityFragment.newInstance(act).show(getSupportFragmentManager(), ActivityFragment.class.getSimpleName());
             }
         }
     }

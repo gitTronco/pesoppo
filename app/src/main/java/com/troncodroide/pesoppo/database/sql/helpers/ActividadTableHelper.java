@@ -41,18 +41,18 @@ public class ActividadTableHelper {
 		return sql;
 	}
     public static String getSelectAllByProject(long idProject) {
-			String sql = "SELECT * FROM " + tabla + " WHERE "+ ActividadTableHelper.idProyecto + " = " +idProject ;
+			String sql = "SELECT * FROM " + tabla + " WHERE "+ ActividadTableHelper.idProyecto + " = '" +idProject+ "'" ;
 		return sql;
 	}
 
     public static String getSelectAllByClave(long idClave) {
-			String sql = "SELECT * FROM " + tabla + " WHERE "+ ActividadTableHelper.idClave+ " = " +idClave;
+			String sql = "SELECT * FROM " + tabla + " WHERE "+ ActividadTableHelper.idClave+ " = '" +idClave+ "'";
 		return sql;
 	}
 
 	public static String getSelectById(long id) {
 		String sql = "SELECT * FROM " + tabla + " WHERE "
-				+ ActividadTableHelper.id + " = " + id;
+				+ ActividadTableHelper.id + " = '" + id + "'";
 		return sql;
 	}
 	public static String getSelectByName(String name) {

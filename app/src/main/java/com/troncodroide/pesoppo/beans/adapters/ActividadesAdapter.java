@@ -14,16 +14,12 @@ import java.util.List;
 /**
  * Created by Tronco on 21/06/2015.
  */
-public class ActividadesAdapter extends ArrayAdapter<Actividad> {
+public class ActividadesAdapter extends BasicArrayAdapter<Actividad> {
 
     public ActividadesAdapter(Context context, List<Actividad> objects) {
-        super(context, R.layout.pessopo_simple_item_listview, R.id.pesoppo_item_title, objects);
+        super(context, objects);
     }
 
-    private class ViewHolder{
-        TextView title,icon,extra;
-        View colorwrapper;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

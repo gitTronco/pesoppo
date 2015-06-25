@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.troncodroide.pesoppo.R;
 import com.troncodroide.pesoppo.beans.Actividad;
 import com.troncodroide.pesoppo.beans.Clave;
-import com.troncodroide.pesoppo.beans.Proyecto;
 import com.troncodroide.pesoppo.database.controllers.ActividadesController;
 import com.troncodroide.pesoppo.database.controllers.ClavesController;
 import com.troncodroide.pesoppo.database.sql.SqlLiteManager;
@@ -129,10 +128,6 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
             dh.actividad.setUnidades(Integer.parseInt(unidades));
             dh.actividad.setIdClave(dh.selectedKey.getId());
             dh.actividad.setTerminado(vh.terminado.isChecked());
-
-            if (dh.proyecto != null) {
-                dh.actividad.setIdProyecto(dh.proyecto.getId());
-            }
         }
 
         return validacion == 0;
@@ -193,7 +188,6 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
     }
 
     private static class DataHolder implements Serializable {
-        Proyecto proyecto;
         Actividad actividad;
         List<Clave> claves;
         Clave selectedKey;
@@ -208,11 +202,10 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
      * @return A new instance of fragment ActivitiesFragment.
      */
 
-    public static ActivityFragment newInstance(Actividad actividad, Proyecto proyecto) {
+    public static ActivityFragment newInstance(Actividad actividad) {
         ActivityFragment fragment = new ActivityFragment();
         Bundle args = new Bundle();
         args.putSerializable(Actividad.class.getName(), actividad);
-        args.putSerializable(Proyecto.class.getName(), proyecto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -227,7 +220,6 @@ public class ActivityFragment extends DialogFragment implements OnClickListener 
         dh = new DataHolder();
         if (getArguments() != null) {
             dh.actividad = (Actividad) getArguments().getSerializable(Actividad.class.getName());
-            dh.proyecto = (Proyecto) getArguments().getSerializable(Proyecto.class.getName());
         }
     }
 
